@@ -56,6 +56,24 @@
     source: "phone",
     _nfTick: null,
     _nfAuto: null,
+    notifs: null,
+    notifPrefs: {
+      master: true,
+      digest: true,
+      each: false,
+      first: true,
+      transfer: true,
+      goal: true,
+      streak: true,
+      points: true,
+      bank: true,
+      weekly: true,
+      nudge: true,
+      quiet: true,
+    },
+    digestTime: "8:00 م",
+    _bannerTimer: null,
+    _bannerLink: "inbox",
   };
 
   const $ = (sel, root = document) => root.querySelector(sel);
@@ -377,6 +395,9 @@
     syncPause();
     syncLevel();
     syncPointsHistory();
+    syncBellBadge();
+    renderInbox();
+    syncNotifPrefs();
     syncNafathWait();
     const alt = $("#phone-alt-line");
     if (alt) {
@@ -484,6 +505,113 @@
     $("#otp-error").classList.add("hidden");
   }
 
+
+  const NOTIF_ICONS = {
+    save: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="8"/><path d="M12 8v8M8 12h8"/></svg>',
+    star: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.5l2.4 5 5.5.8-4 3.9.9 5.5L12 16.8 7.2 18.7l.9-5.5-4-3.9 5.5-.8L12 3.5z"/></svg>',
+    goal: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="4"/><circle cx="12" cy="12" r="1.2" fill="currentColor" stroke="none"/></svg>',
+    week: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="4" y="5" width="16" height="15" rx="2"/><path d="M8 3v4M16 3v4M4 10h16"/></svg>',
+  };
+
+  function defaultNotifs() {
+    return [
+      { id: "n1", type: "daily_digest", title: "فكتك اليوم", body: "انحفظت 4 عمليات بـ 7.50 ر.س. رصيد التحويل صار 14 من 20.", time: "8:00 م", group: "today", read: false, link: "history", ico: "save", icoCls: "" },
+      { id: "n2", type: "first_save_points", title: "أول ادخار اليوم", body: "انحفظت فكتك اليوم، وكسبت +10 نقاط.", time: "11:05 ص", group: "today", read: false, link: "points-history", ico: "star", icoCls: "gold" },
+      { id: "n3", type: "streak_at_risk", title: "سلسلتك مستمرة", body: "عندك سلسلة 7 أيام. إذا انحفظت فكة اليوم تبقى السلسلة.", time: "أمس، 8:00 م", group: "earlier", read: false, link: "home", ico: "star", icoCls: "gold" },
+      { id: "n4", type: "goal_50", title: "وصلت لنص الهدف", body: "ادّخرت 25 من 50 ريال لهدف نوفمبر. تمشي تمام.", time: "2 نوفمبر", group: "earlier", read: true, link: "goal", ico: "goal", icoCls: "" },
+      { id: "n5", type: "weekly_summary", title: "ملخص أسبوعك", body: "هذا الأسبوع: 12 عملية، 18.50 ر.س انحفظت، و+70 نقطة.", time: "السبت", group: "earlier", read: true, link: "history", ico: "week", icoCls: "" },
+      { id: "n6", type: "level_progress", title: "باقي 120 نقطة", body: "مستواك فضي، وباقي 120 نقطة وتوصل للذهبي.", time: "28 أكتوبر", group: "earlier", read: true, link: "profile-main", ico: "star", icoCls: "gold" },
+    ];
+  }
+  state.notifs = defaultNotifs();
+
+  function unreadCount() {
+    return (state.notifs || []).filter((n) => !n.read).length;
+  }
+
+  function syncBellBadge() {
+    const n = unreadCount();
+    const el = $("#home-bell-badge");
+    if (!el) return;
+    if (n > 0) {
+      el.hidden = false;
+      el.textContent = String(n);
+    } else {
+      el.hidden = true;
+    }
+  }
+
+  function renderInbox() {
+    const root = $("#inbox-list");
+    if (!root) return;
+    const list = state.notifs || [];
+    if (!list.length) {
+      root.innerHTML = `<div class="empty" style="flex:1;min-height:280px">
+        <div class="empty-art"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6.2 9.2a5.8 5.8 0 1 1 11.6 0c0 3.4 1.2 5 1.8 6H4.4c.6-1 1.8-2.6 1.8-6Z"/><path d="M10 18.2a2 2 0 0 0 4 0"/></svg></div>
+        <h3>ما فيه إشعارات</h3>
+        <p>عندما تنحفظ فكة أو يوصل تحويل، تظهر هنا. تقدر تعدّل التنبيهات من الإعدادات.</p>
+      </div>`;
+      return;
+    }
+    const groups = [
+      ["today", "اليوم"],
+      ["earlier", "سابقًا"],
+    ];
+    let html = "";
+    for (const [key, label] of groups) {
+      const rows = list.filter((n) => n.group === key);
+      if (!rows.length) continue;
+      html += `<div class="n-group-label">${label}</div><div class="n-list">`;
+      html += rows
+        .map((n) => {
+          const unread = n.read ? "" : " unread";
+          const ico = NOTIF_ICONS[n.ico] || NOTIF_ICONS.save;
+          return `<button type="button" class="n-row${unread}" data-action="open-notif" data-nid="${n.id}">
+            <div class="n-ico ${n.icoCls || ""}">${ico}</div>
+            <div class="n-copy">
+              <div class="n-title-row"><span class="n-title">${n.title}</span><span class="n-time">${n.time}</span></div>
+              <div class="n-body">${n.body}</div>
+            </div>
+            <span class="n-dot"></span>
+          </button>`;
+        })
+        .join("");
+      html += "</div>";
+    }
+    root.innerHTML = html;
+  }
+
+  function syncNotifPrefs() {
+    $$("[data-action='toggle-pref']").forEach((el) => {
+      const key = el.dataset.pref;
+      el.classList.toggle("on", !!state.notifPrefs[key]);
+    });
+    if ($("#digest-time-val")) $("#digest-time-val").textContent = state.digestTime;
+  }
+
+  function hideBanner() {
+    const b = $("#notif-banner");
+    if (b) b.hidden = true;
+    if (state._bannerTimer) {
+      clearTimeout(state._bannerTimer);
+      state._bannerTimer = null;
+    }
+  }
+
+  function showBanner(n) {
+    const b = $("#notif-banner");
+    if (!b) return;
+    if ($("#nb-title")) $("#nb-title").textContent = n.title;
+    if ($("#nb-body")) $("#nb-body").textContent = n.body;
+    state._bannerLink = n.link || "inbox";
+    state._bannerNid = n.id;
+    b.hidden = false;
+    if (state._bannerTimer) clearTimeout(state._bannerTimer);
+    state._bannerTimer = setTimeout(hideBanner, 4500);
+  }
+
+  const DIGEST_TIMES = ["8:00 م", "9:00 م", "9:30 م", "7:00 م"];
+
   // events
   document.addEventListener("click", (e) => {
     const t = e.target.closest("[data-action], [data-nav], [data-back], [data-tab], [data-filter]");
@@ -512,6 +640,67 @@
     const act = t.dataset.action;
     if (!act) return;
     switch (act) {
+
+      case "open-inbox":
+        show("inbox");
+        break;
+      case "open-notif": {
+        const id = t.dataset.nid;
+        const n = (state.notifs || []).find((x) => x.id === id);
+        if (n) {
+          n.read = true;
+          const target = n.link || "home";
+          if ($(`.view[data-view="${target}"]`)) show(target);
+          else show("home");
+        }
+        break;
+      }
+      case "demo-notif": {
+        const n = {
+          id: "demo-" + Date.now(),
+          type: "daily_digest",
+          title: "فكتك اليوم",
+          body: "انحفظت 4 عمليات بـ 7.50 ر.س. رصيد التحويل صار 14 من 20.",
+          time: "الآن",
+          group: "today",
+          read: false,
+          link: "history",
+          ico: "save",
+          icoCls: "",
+        };
+        state.notifs = [n].concat(state.notifs || []);
+        renderInbox();
+        syncBellBadge();
+        showBanner(n);
+        break;
+      }
+      case "open-banner": {
+        hideBanner();
+        const id = state._bannerNid;
+        const n = (state.notifs || []).find((x) => x.id === id);
+        if (n) n.read = true;
+        const target = state._bannerLink || "inbox";
+        if ($(`.view[data-view="${target}"]`)) show(target);
+        else show("inbox");
+        break;
+      }
+      case "toggle-pref": {
+        const key = t.dataset.pref;
+        if (key && key in state.notifPrefs) {
+          state.notifPrefs[key] = !state.notifPrefs[key];
+          if (key === "master" && !state.notifPrefs.master) {
+            // master off does not change security (no pref key)
+          }
+          syncNotifPrefs();
+        }
+        break;
+      }
+      case "cycle-digest-time": {
+        const i = DIGEST_TIMES.indexOf(state.digestTime);
+        state.digestTime = DIGEST_TIMES[(i + 1) % DIGEST_TIMES.length];
+        syncNotifPrefs();
+        break;
+      }
       case "noop":
         e.preventDefault();
         break;
@@ -851,7 +1040,7 @@
   // hash deep-links for debugging: #home
   const hash = (location.hash || "").replace("#", "");
   if (hash && $(`.view[data-view="${hash}"]`)) {
-    if (hash === "home" || hash === "history" || hash === "settings" || hash === "profile-main") {
+    if (hash === "home" || hash === "history" || hash === "settings" || hash === "profile-main" || hash === "inbox" || hash === "notif-settings") {
       seedReturningUser();
     }
     show(hash, { push: false });

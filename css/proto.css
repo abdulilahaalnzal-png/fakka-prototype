@@ -180,8 +180,14 @@ body {
   .sheet,
   .celebrate,
   .scrim,
-  #levelup-overlay {
+  #levelup-overlay,
+  #notif-banner {
     position: fixed;
+  }
+  #notif-banner {
+    top: calc(max(env(safe-area-inset-top, 0px), 16px) + 8px);
+    left: 12px;
+    right: 12px;
   }
   .sheet {
     left: 0 !important;
@@ -264,7 +270,8 @@ body {
     top: 10px;
     color: rgba(26, 29, 28, 0.45);
   }
-  .sheet, .celebrate, .scrim, #levelup-overlay { position: absolute; }
+  .sheet, .celebrate, .scrim, #levelup-overlay, #notif-banner { position: absolute; }
+  #notif-banner { top: 54px; left: 12px; right: 12px; }
   .sheet, .celebrate-card {
     max-height: 90%;
     overflow-x: hidden;
@@ -316,7 +323,7 @@ body {
 .btn { cursor: pointer; user-select: none; -webkit-tap-highlight-color: transparent; }
 .btn:active { transform: scale(0.99); opacity: 0.92; }
 .btn[disabled] { opacity: 0.45; pointer-events: none; }
-.icon-btn, .list-row, .txn, .txn-row, .filter-chip, .seg, .preset, .tab,
+.icon-btn, .bell-btn, .n-row, .n-demo, .nset-row, .list-row, .txn, .txn-row, .filter-chip, .seg, .preset, .tab,
 .choice-btn, .pause-action, .link, .check, .pts-row, .nav-card {
   cursor: pointer; -webkit-tap-highlight-color: transparent;
 }
