@@ -1,13 +1,11 @@
 /* فكة — interactive design prototype */
 (function () {
   const LEVELS = [
-    { n: 1, name: "هلّة", from: 0 },
-    { n: 2, name: "فكة", from: 100 },
-    { n: 3, name: "حصّالة", from: 250 },
-    { n: 4, name: "كيس الريال", from: 500 },
-    { n: 5, name: "خزنة", from: 1000 },
-    { n: 6, name: "بيت المال", from: 2000 },
-    { n: 7, name: "كنز النخيل", from: 4000 },
+    { n: 1, name: "برونزي", from: 0, mark: "cream" },
+    { n: 2, name: "فضي", from: 250, mark: "green" },
+    { n: 3, name: "ذهبي", from: 500, mark: "green" },
+    { n: 4, name: "بلاتيني", from: 1000, mark: "green" },
+    { n: 5, name: "ماسي", from: 2000, mark: "green" },
   ];
 
   const TXNS = [
@@ -55,14 +53,21 @@
   }
 
   function badgeHTML(n) {
-    const dark = n >= 3;
-    const fill = dark ? "#F6F4EF" : "#0B6E56";
+    const L = LEVELS.find((x) => x.n === n) || LEVELS[0];
+    const fill = L.mark === "cream" ? "#F6F4EF" : "#0B6E56";
     return `<div class="badge-mark l${n}"><svg viewBox="0 0 120 120" fill="none" aria-hidden="true">
       <rect x="6" y="74" width="52" height="20" rx="10" fill="${fill}"/>
       <path fill="none" stroke="${fill}" stroke-width="20" stroke-linecap="round" d="M 91.487 40.014 A 33 33 0 1 1 56.513 40.014"/>
       <circle cx="74" cy="20.5" r="13.2" fill="#C9A84C"/>
       <circle cx="74" cy="20.5" r="7.26" fill="none" stroke="#B8943A" stroke-width="2.4"/>
     </svg></div>`;
+  }
+
+  function nextLevelCopy(info, { short = false } = {}) {
+    if (!info.next) return "وصلت إلى أعلى مستوى";
+    return short
+      ? `باقي ${info.left} نقطة وتوصل لل${info.next.name}`
+      : `باقي ${info.left} نقطة وتوصل للمستوى ال${info.next.name}`;
   }
 
   function formatPhone(digits) {
@@ -97,8 +102,13 @@
       else v.setAttribute("hidden", "");
     });
     window.scrollTo(0, 0);
-    $("#stage").scrollTop = 0;
+    if (document.documentElement) document.documentElement.scrollTop = 0;
+    if (document.body) document.body.scrollTop = 0;
+    $("#stage") && ($("#stage").scrollTop = 0);
+    const bodyEl = document.querySelector(".view.on .screen-body");
+    if (bodyEl) bodyEl.scrollTop = 0;
     render();
+    syncScrollLock();
     if (name === "otp") {
       setTimeout(() => $("#otp-input") && $("#otp-input").focus(), 200);
     }
@@ -233,22 +243,68 @@
     if ($("#home-level-pill")) $("#home-level-pill").innerHTML = pill;
     if ($("#home-level-bar")) $("#home-level-bar").style.width = info.pct + "%";
     if ($("#home-level-next")) {
-      $("#home-level-next").textContent = info.next
-        ? `باقي ${info.left} نقطة لـ«${info.next.name}»`
-        : "وصلت إلى أعلى مستوى";
+      $("#home-level-next").textContent = nextLevelCopy(info, { short: true });
     }
     if ($("#set-badge")) $("#set-badge").innerHTML = badgeHTML(info.cur.n);
-    if ($("#set-level-sub")) $("#set-level-sub").textContent = `${info.cur.name} · ${state.points} نقطة`;
+    if ($("#set-level-sub")) $("#set-level-sub").textContent = `مستواك: ${info.cur.name} · ${state.points} نقطة`;
     if ($("#profile-badge")) $("#profile-badge").innerHTML = badgeHTML(info.cur.n);
-    if ($("#profile-level-name")) $("#profile-level-name").textContent = info.cur.name;
+    if ($("#profile-level-name")) $("#profile-level-name").textContent = `مستواك: ${info.cur.name}`;
     if ($("#profile-pts")) $("#profile-pts").textContent = String(state.points);
     if ($("#profile-bar")) $("#profile-bar").style.width = info.pct + "%";
     if ($("#profile-level-foot")) {
       $("#profile-level-foot").textContent = info.next
-        ? `باقي ${info.left} نقطة للوصول إلى «${info.next.name}».`
+        ? nextLevelCopy(info) + "."
         : "وصلت إلى أعلى مستوى.";
     }
     if ($("#ph-total")) $("#ph-total").textContent = String(state.points);
+    renderLadder(info);
+  }
+
+  function renderLadder(info) {
+    const host = $("#level-ladder-list");
+    if (!host) return;
+    host.innerHTML = LEVELS.map((L) => {
+      const done = state.points >= L.from && L.n !== info.cur.n;
+      const current = L.n === info.cur.n;
+      const next = info.next && L.n === info.next.n;
+      const cls = current ? "current" : next ? "next" : done ? "done" : "";
+      const tag = current ? "مستواك الحالي" : next ? "التالي" : done ? "مكتمل" : "";
+      const check = done || current ? '<span class="ll-check" aria-hidden="true">✓</span>' : '<span class="ll-check" aria-hidden="true"></span>';
+      return `<li class="${cls}">
+        ${badgeHTML(L.n)}
+        <div class="ll-copy">
+          <div class="ll-name">${L.name}</div>
+          <div class="ll-pts">من ${L.from} نقطة</div>
+        </div>
+        ${tag ? `<span class="ll-tag">${tag}</span>` : ""}
+        ${check}
+      </li>`;
+    }).join("");
+  }
+
+  let _lockY = 0;
+  function syncScrollLock() {
+    const open = !!document.querySelector(
+      ".view.on .celebrate:not(.hidden), .view.on .sheet:not(.hidden), #levelup-overlay:not(.hidden)"
+    );
+    const body = document.body;
+    if (open && !body.classList.contains("sheet-open")) {
+      _lockY = window.scrollY || window.pageYOffset || 0;
+      body.classList.add("sheet-open");
+      body.style.top = `-${_lockY}px`;
+      body.style.position = "fixed";
+      body.style.left = "0";
+      body.style.right = "0";
+      body.style.width = "100%";
+    } else if (!open && body.classList.contains("sheet-open")) {
+      body.classList.remove("sheet-open");
+      body.style.position = "";
+      body.style.top = "";
+      body.style.left = "";
+      body.style.right = "";
+      body.style.width = "";
+      window.scrollTo(0, _lockY);
+    }
   }
 
   function syncPointsHistory() {
@@ -321,10 +377,12 @@
     show("history", { push: state.view !== "history" });
     $("#txn-scrim").classList.remove("hidden");
     $("#txn-sheet").classList.remove("hidden");
+    syncScrollLock();
   }
   function closeTxn() {
     $("#txn-scrim") && $("#txn-scrim").classList.add("hidden");
     $("#txn-sheet") && $("#txn-sheet").classList.add("hidden");
+    syncScrollLock();
   }
 
   function setOtpBoxes(val) {
@@ -498,9 +556,11 @@
         break;
       case "preview-levelup":
         $("#levelup-overlay").classList.remove("hidden");
+        syncScrollLock();
         break;
       case "close-levelup":
         $("#levelup-overlay").classList.add("hidden");
+        syncScrollLock();
         break;
       case "logout":
         Object.assign(state, {

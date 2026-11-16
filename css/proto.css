@@ -1,4 +1,4 @@
-/* Prototype chrome — full-screen on phones, framed device on desktop */
+/* Prototype chrome — document scroll on phones, framed device on desktop */
 
 *, *::before, *::after { box-sizing: border-box; }
 
@@ -10,35 +10,6 @@ html, body {
   font-family: var(--fk-font);
   -webkit-font-smoothing: antialiased;
   background: var(--fk-canvas, #F6F4EF);
-}
-html { height: 100%; }
-body {
-  min-height: 100%;
-  min-height: 100vh; /* fallback */
-  min-height: -webkit-fill-available;
-  min-height: 100dvh; /* preferred, must come last */
-}
-
-#app {
-  width: 100%;
-  max-width: none;
-  margin: 0;
-  background: var(--fk-canvas, #F6F4EF);
-  display: flex;
-  flex-direction: column;
-  position: relative;
-  overflow: hidden;
-  border-radius: 0;
-  box-shadow: none;
-  /* 100dvh last so Chrome does not keep -webkit-fill-available */
-  min-height: 100%;
-  min-height: 100vh;
-  min-height: -webkit-fill-available;
-  min-height: 100dvh;
-  height: 100%;
-  height: 100vh;
-  height: -webkit-fill-available;
-  height: 100dvh;
 }
 
 /* Small overlay label — not a full-width band */
@@ -61,52 +32,80 @@ body {
   white-space: nowrap;
 }
 
-#stage { flex: 1; min-height: 0; position: relative; width: 100%; }
-.view { display: none; height: 100%; width: 100%; }
-.view.on { display: flex; flex-direction: column; height: 100%; }
-.view[hidden] { display: none !important; }
-.view.on:not([hidden]) { display: flex; flex-direction: column; height: 100%; }
-
-.phone {
-  width: 100% !important;
-  height: 100% !important;
-  min-height: 0;
-  flex: 1;
-  border-radius: 0 !important;
-  overflow: hidden;
-  box-shadow: none !important;
-}
-.phone.welcome { height: 100% !important; }
-
-/* -------- Scrollable content on every screen --------
-   #app is position:fixed + overflow:hidden on phones, and .phone
-   also clips. Without an inner scroller, tall screens (savings/goal
-   options, how-to-earn, home on short viewports) cannot move. */
-#app, #stage, .view.on, .view.on:not([hidden]), .phone {
-  min-height: 0;
-}
-#stage { overflow: hidden; }
-.view.on, .view.on:not([hidden]) {
-  overflow: hidden;
-  min-height: 0;
-}
-.phone {
-  overflow: hidden; /* clip the frame, scroll inside .screen-body */
-}
-
-.screen-body {
-  flex: 1 1 auto;
-  min-height: 0;
+/* -------- Phone-sized (and default): the PAGE scrolls, like a normal site.
+   Nested overflow + position:fixed on #app is a known iOS WKWebView trap
+   (WhatsApp/Safari in-app): the window feels frozen and lists won't move. */
+html {
+  height: auto;
   overflow-x: hidden;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
-  overscroll-behavior: contain;
-  touch-action: pan-y;
 }
-/* Don't let flex shrink cards/lists and clip their overflow:hidden contents */
+body {
+  min-height: 100%;
+  min-height: 100vh;
+  min-height: 100dvh;
+  height: auto;
+  overflow-x: hidden;
+  overflow-y: auto;
+  position: static;
+}
+#app {
+  position: relative;
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  height: auto;
+  min-height: 100vh;
+  min-height: 100dvh;
+  background: var(--fk-canvas, #F6F4EF);
+  display: flex;
+  flex-direction: column;
+  overflow: visible;
+  border-radius: 0;
+  box-shadow: none;
+}
+#stage {
+  position: relative;
+  width: 100%;
+  flex: 1 0 auto;
+  min-height: 0;
+  overflow: visible;
+}
+.view { display: none; width: 100%; height: auto; }
+.view[hidden] { display: none !important; }
+.view.on,
+.view.on:not([hidden]) {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: auto;
+  min-height: 100vh;
+  min-height: 100dvh;
+  overflow: visible;
+}
+.phone {
+  width: 100% !important;
+  height: auto !important;
+  min-height: 100vh;
+  min-height: 100dvh;
+  flex: 1 0 auto;
+  border-radius: 0 !important;
+  overflow: visible !important;
+  box-shadow: none !important;
+  display: flex;
+  flex-direction: column;
+}
+.phone.welcome { height: auto !important; min-height: 100vh; min-height: 100dvh; }
+
+.screen-body {
+  flex: 1 0 auto;
+  min-height: 0;
+  overflow: visible !important;
+  height: auto;
+}
 .screen-body > * { flex-shrink: 0; }
 
-/* Keep primary CTAs reachable while options scroll */
 .bottom,
 .welcome-actions {
   position: sticky;
@@ -118,24 +117,7 @@ body {
   margin-top: auto;
 }
 
-.sheet {
-  max-height: 90vh;
-  max-height: 90dvh;
-  overflow-x: hidden;
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
-  overscroll-behavior: contain;
-}
-.celebrate-card {
-  max-height: 90vh;
-  max-height: 90dvh;
-  overflow-x: hidden;
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
-  overscroll-behavior: contain;
-}
-
-/* -------- Phone-sized: truly full screen -------- */
+/* -------- ≤600px: full-bleed, document is the only scroller -------- */
 @media (max-width: 600px) {
   html, body, #app {
     width: 100%;
@@ -144,18 +126,9 @@ body {
     background: var(--fk-canvas, #F6F4EF);
     border-radius: 0 !important;
     box-shadow: none !important;
-  }
-  /* Pin to the visual viewport so in-app iOS browsers cannot leave a gap */
-  #app {
-    position: fixed;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    height: 100vh;
-    height: -webkit-fill-available;
-    height: 100dvh;
-    min-height: 100%;
-    min-height: 100dvh;
+    position: static;
+    overflow: visible;
+    height: auto;
   }
   .status-bar,
   .home-indicator { display: none !important; }
@@ -168,14 +141,30 @@ body {
   .phone:not(.has-tabs) .screen-body {
     padding-bottom: calc(16px + env(safe-area-inset-bottom, 0px));
   }
+  .phone.has-tabs .screen-body {
+    padding-bottom: calc(var(--fk-tabbar-height) + env(safe-area-inset-bottom, 0px) + 12px) !important;
+  }
   .bottom,
   .welcome-actions {
     padding-bottom: calc(16px + env(safe-area-inset-bottom, 0px)) !important;
   }
+  /* Tab bar docks to the real viewport, content padded above it */
   .tabbar {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    z-index: 20;
     height: auto;
     min-height: var(--fk-tabbar-height);
     padding: 8px 12px calc(8px + env(safe-area-inset-bottom, 0px));
+  }
+  .sheet,
+  .celebrate,
+  .scrim,
+  #levelup-overlay {
+    position: fixed;
   }
   .sheet {
     left: 0 !important;
@@ -183,8 +172,13 @@ body {
     bottom: 0 !important;
     width: 100%;
     max-width: none;
+    max-height: 90vh;
+    max-height: 90dvh;
     border-radius: 28px 28px 0 0 !important;
     padding-bottom: calc(20px + env(safe-area-inset-bottom, 0px)) !important;
+    overflow-x: hidden;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
   }
   .celebrate,
   .scrim {
@@ -194,19 +188,31 @@ body {
   .celebrate-card {
     width: 100%;
     max-width: none;
+    max-height: 90vh;
+    max-height: 90dvh;
     border-radius: 28px 28px 0 0 !important;
     padding-bottom: calc(24px + env(safe-area-inset-bottom, 0px)) !important;
+    overflow-x: hidden;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  /* Lock the document only while a sheet/modal is open; the sheet itself scrolls */
+  body.sheet-open {
+    overflow: hidden;
+    width: 100%;
   }
 }
 
-/* -------- Desktop: centered phone frame -------- */
+/* -------- Desktop: centered phone frame, inner scroller -------- */
 @media (min-width: 601px) {
-  html, body { background: #111513; }
+  html, body { background: #111513; height: 100%; }
   body {
     display: flex;
     align-items: center;
     justify-content: center;
     padding: 32px 16px;
+    overflow: auto;
+    min-height: 100%;
   }
   #app {
     width: 390px;
@@ -216,12 +222,78 @@ body {
     border-radius: 36px;
     box-shadow: 0 0 0 1px rgba(255,255,255,0.04), 0 18px 48px rgba(0,0,0,0.45);
     overflow: hidden;
+    position: relative;
   }
+  #stage { flex: 1; min-height: 0; overflow: hidden; height: 100%; }
+  .view.on, .view.on:not([hidden]) {
+    height: 100%;
+    min-height: 0;
+    overflow: hidden;
+  }
+  .phone {
+    height: 100% !important;
+    min-height: 0;
+    overflow: hidden !important;
+  }
+  .screen-body {
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow-x: hidden;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  .tabbar { position: relative; left: auto; right: auto; bottom: auto; }
   .demo-tag {
     top: 10px;
     color: rgba(26, 29, 28, 0.45);
   }
+  .sheet, .celebrate, .scrim, #levelup-overlay { position: absolute; }
+  .sheet, .celebrate-card {
+    max-height: 90%;
+    overflow-x: hidden;
+    overflow-y: auto;
+  }
+  body.sheet-open { overflow: auto; }
 }
+
+/* Level ladder on the profile */
+.level-ladder { margin-top: 18px; }
+.level-ladder h3 {
+  font-size: 15px; font-weight: 700; margin: 0 0 10px;
+}
+.level-ladder ol {
+  list-style: none; margin: 0; padding: 0;
+  background: var(--fk-surface);
+  border-radius: var(--fk-radius-lg);
+  box-shadow: var(--fk-shadow-card);
+  overflow: hidden;
+}
+.level-ladder li {
+  display: flex; align-items: center; gap: 10px;
+  padding: 8px 14px;
+  border-bottom: 1px solid var(--fk-line);
+}
+.level-ladder li:last-child { border-bottom: 0; }
+.level-ladder li.current { background: var(--fk-primary-soft); }
+.ll-copy { flex: 1; min-width: 0; }
+.ll-name { font-size: 14.5px; font-weight: 700; }
+.ll-pts { margin-top: 2px; font-size: 12px; color: var(--fk-ink-secondary); }
+.ll-tag {
+  flex-shrink: 0;
+  font-size: 11.5px; font-weight: 600;
+  color: var(--fk-primary);
+}
+.ll-check {
+  flex-shrink: 0;
+  color: var(--fk-primary);
+  font-weight: 700;
+  font-size: 14px;
+}
+.level-ladder .badge-mark { width: 28px; height: 28px; }
+.level-ladder .badge-mark svg { width: 18px; height: 18px; }
+
+.ob-ladder { margin-top: 18px; }
+.ob-ladder li { padding: 10px 14px; }
 
 /* Interactions */
 .btn { cursor: pointer; user-select: none; -webkit-tap-highlight-color: transparent; }
