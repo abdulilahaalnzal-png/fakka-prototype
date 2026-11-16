@@ -78,6 +78,63 @@ body {
 }
 .phone.welcome { height: 100% !important; }
 
+/* -------- Scrollable content on every screen --------
+   #app is position:fixed + overflow:hidden on phones, and .phone
+   also clips. Without an inner scroller, tall screens (savings/goal
+   options, how-to-earn, home on short viewports) cannot move. */
+#app, #stage, .view.on, .view.on:not([hidden]), .phone {
+  min-height: 0;
+}
+#stage { overflow: hidden; }
+.view.on, .view.on:not([hidden]) {
+  overflow: hidden;
+  min-height: 0;
+}
+.phone {
+  overflow: hidden; /* clip the frame, scroll inside .screen-body */
+}
+
+.screen-body {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+  touch-action: pan-y;
+}
+/* Don't let flex shrink cards/lists and clip their overflow:hidden contents */
+.screen-body > * { flex-shrink: 0; }
+
+/* Keep primary CTAs reachable while options scroll */
+.bottom,
+.welcome-actions {
+  position: sticky;
+  bottom: 0;
+  z-index: 3;
+  flex-shrink: 0;
+  background: var(--fk-canvas, #F6F4EF);
+  box-shadow: 0 -16px 20px 10px var(--fk-canvas, #F6F4EF);
+  margin-top: auto;
+}
+
+.sheet {
+  max-height: 90vh;
+  max-height: 90dvh;
+  overflow-x: hidden;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+}
+.celebrate-card {
+  max-height: 90vh;
+  max-height: 90dvh;
+  overflow-x: hidden;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+}
+
 /* -------- Phone-sized: truly full screen -------- */
 @media (max-width: 600px) {
   html, body, #app {
@@ -111,6 +168,7 @@ body {
   .phone:not(.has-tabs) .screen-body {
     padding-bottom: calc(16px + env(safe-area-inset-bottom, 0px));
   }
+  .bottom,
   .welcome-actions {
     padding-bottom: calc(16px + env(safe-area-inset-bottom, 0px)) !important;
   }
