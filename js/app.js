@@ -47,6 +47,15 @@
     awarded: { profile: false, bank: false, goal: false },
     month: MONTH_SAVED,
     continueAfterGoal: false,
+    nid: "",
+    nidTerms: true,
+    officialName: "",
+    nafathExisting: false,
+    nafathCode: 47,
+    nafathLeft: 120,
+    source: "phone",
+    _nfTick: null,
+    _nfAuto: null,
   };
 
   const $ = (sel, root = document) => root.querySelector(sel);
@@ -105,6 +114,7 @@
   }
 
   function show(name, { push = true } = {}) {
+    if (state.view === "nafath-wait" && name !== "nafath-wait") clearNafathTimers();
     if (push && state.view && state.view !== name) state.stack.push(state.view);
     state.view = name;
     $$(".view").forEach((v) => {
@@ -367,11 +377,82 @@
     syncPause();
     syncLevel();
     syncPointsHistory();
+    syncNafathWait();
+    const alt = $("#phone-alt-line");
+    if (alt) {
+      alt.innerHTML =
+        state.mode === "signup"
+          ? 'عندك حساب؟ <a class="link" href="#" data-action="login-phone">دخول برقم الجوال</a>'
+          : 'ما عندك حساب؟ <a class="link" href="#" data-action="signup-phone">أنشئ حساب برقم الجوال</a>';
+    }
   }
 
   function validPhone(raw) {
     const d = (raw || "").replace(/\D/g, "");
     return /^5\d{8}$/.test(d);
+  }
+
+  function validNid(raw) {
+    const d = (raw || "").replace(/\D/g, "");
+    return /^[12]\d{9}$/.test(d);
+  }
+
+  function formatNid(digits) {
+    const d = (digits || "").replace(/\D/g, "").slice(0, 10);
+    if (d.length <= 1) return d;
+    if (d.length <= 4) return d[0] + " " + d.slice(1);
+    if (d.length <= 7) return d[0] + " " + d.slice(1, 4) + " " + d.slice(4);
+    return d[0] + " " + d.slice(1, 4) + " " + d.slice(4, 7) + " " + d.slice(7);
+  }
+
+  function formatMmSs(s) {
+    const n = Math.max(0, s | 0);
+    const m = String(Math.floor(n / 60)).padStart(2, "0");
+    const r = String(n % 60).padStart(2, "0");
+    return m + ":" + r;
+  }
+
+  function clearNafathTimers() {
+    if (state._nfTick) clearInterval(state._nfTick);
+    if (state._nfAuto) clearTimeout(state._nfAuto);
+    state._nfTick = null;
+    state._nfAuto = null;
+  }
+
+  function syncNafathWait() {
+    if ($("#nafath-code")) $("#nafath-code").textContent = String(state.nafathCode);
+    if ($("#nafath-expired-code")) $("#nafath-expired-code").textContent = String(state.nafathCode);
+    if ($("#nafath-count")) $("#nafath-count").textContent = formatMmSs(state.nafathLeft);
+    if ($("#nafath-official-name")) $("#nafath-official-name").textContent = state.officialName || "فهد العتيبي";
+    if ($("#nf-name-readonly")) $("#nf-name-readonly").textContent = state.officialName || "فهد العتيبي";
+  }
+
+  function startNafathWait() {
+    clearNafathTimers();
+    state.nafathCode = 10 + Math.floor(Math.random() * 90);
+    state.nafathLeft = 120;
+    syncNafathWait();
+    show("nafath-wait");
+    state._nfTick = setInterval(() => {
+      state.nafathLeft -= 1;
+      syncNafathWait();
+      if (state.nafathLeft <= 0) {
+        clearNafathTimers();
+        if (state.view === "nafath-wait") show("nafath-expired", { push: false });
+      }
+    }, 1000);
+    state._nfAuto = setTimeout(() => {
+      if (state.view === "nafath-wait") nafathApprove();
+    }, 4000);
+  }
+
+  function nafathApprove() {
+    clearNafathTimers();
+    state.officialName = "فهد العتيبي";
+    state.name = "فهد العتيبي";
+    state.nafathExisting = state.nid === "1098765432";
+    syncNafathWait();
+    show("nafath-ok");
   }
 
   function openTxn(i) {
@@ -436,12 +517,105 @@
         break;
       case "signup":
         state.mode = "signup";
+        state.source = "phone";
         show("phone");
         break;
       case "login":
         state.mode = "login";
+        state.source = "phone";
         show("phone");
         break;
+      case "login-phone":
+        state.mode = "login";
+        state.source = "phone";
+        show("phone");
+        break;
+      case "signup-phone":
+        state.mode = "signup";
+        state.source = "phone";
+        show("phone");
+        break;
+      case "nafath-start":
+        state.source = "nafath";
+        show("nid");
+        break;
+      case "submit-nid": {
+        const raw = ($("#nid-input").value || "").replace(/\D/g, "");
+        if (!validNid(raw) || !state.nidTerms) {
+          $("#nid-field") && $("#nid-field").classList.toggle("error", !validNid(raw));
+          $("#nid-error") && $("#nid-error").classList.toggle("hidden", validNid(raw));
+          if (!state.nidTerms && $("#nid-terms-row")) $("#nid-terms-row").style.outline = "2px solid var(--fk-danger)";
+          return;
+        }
+        state.nid = raw;
+        $("#nid-field") && $("#nid-field").classList.remove("error");
+        $("#nid-error") && $("#nid-error").classList.add("hidden");
+        startNafathWait();
+        break;
+      }
+      case "open-nafath-app":
+        if ($(".demo-preview .dp-k")) {
+          $(".demo-preview .dp-k").textContent = "في التطبيق الحقيقي يُفتح تطبيق نفاذ هنا. للمعولية اختر حالة من المعاينة، أو انتظر القبول التجريبي.";
+        }
+        break;
+      case "nafath-approve":
+        nafathApprove();
+        break;
+      case "nafath-reject":
+        clearNafathTimers();
+        show("nafath-rejected");
+        break;
+      case "nafath-expire":
+        clearNafathTimers();
+        show("nafath-expired");
+        break;
+      case "nafath-down":
+        clearNafathTimers();
+        show("nafath-down");
+        break;
+      case "nafath-retry":
+      case "nafath-resend":
+        startNafathWait();
+        break;
+      case "nafath-later":
+        show("welcome", { push: false });
+        state.stack = [];
+        break;
+      case "confirm-nafath":
+        if (state.nafathExisting) {
+          seedReturningUser();
+          state.name = state.officialName || state.name;
+          show("home", { push: false });
+          state.stack = [];
+        } else {
+          show("nafath-phone");
+        }
+        break;
+      case "submit-nafath-phone": {
+        const raw = ($("#nf-phone-input").value || "").replace(/\D/g, "");
+        if (!validPhone(raw)) {
+          $("#nf-phone-field") && $("#nf-phone-field").classList.add("error");
+          $("#nf-phone-error") && $("#nf-phone-error").classList.remove("hidden");
+          return;
+        }
+        state.phone = raw;
+        $("#nf-phone-field") && $("#nf-phone-field").classList.remove("error");
+        $("#nf-phone-error") && $("#nf-phone-error").classList.add("hidden");
+        show("nafath-email");
+        break;
+      }
+      case "submit-nafath-email": {
+        const email = ($("#nf-email-input").value || "").trim();
+        if (!/.+@.+\..+/.test(email)) {
+          $("#nf-email-field") && $("#nf-email-field").classList.add("error");
+          return;
+        }
+        state.email = email;
+        state.name = state.officialName || state.name;
+        awardProfile();
+        show("profile-points");
+        break;
+      }
       case "submit-phone": {
         const raw = ($("#phone-input").value || "").replace(/\D/g, "");
         if (!validPhone(raw) || !state.terms) {
@@ -627,6 +801,42 @@
     });
     otpInput.addEventListener("focus", () => setOtpBoxes(otpInput.value));
   }
+
+  $("#nid-input") &&
+    $("#nid-input").addEventListener("input", (e) => {
+      const d = e.target.value.replace(/\D/g, "").slice(0, 10);
+      e.target.value = formatNid(d);
+      $("#nid-field") && $("#nid-field").classList.remove("error");
+      $("#nid-error") && $("#nid-error").classList.add("hidden");
+    });
+
+  $("#nid-terms-row") &&
+    $("#nid-terms-row").addEventListener("click", (e) => {
+      if (e.target.closest("a")) return;
+      e.preventDefault();
+      state.nidTerms = !state.nidTerms;
+      const box = $("#nid-terms-box");
+      if (box) {
+        box.classList.toggle("on", state.nidTerms);
+        box.innerHTML = state.nidTerms
+          ? '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l5 5 9-11"/></svg>'
+          : "";
+      }
+      if ($("#nid-terms-row")) $("#nid-terms-row").style.outline = "";
+    });
+
+  $("#nf-phone-input") &&
+    $("#nf-phone-input").addEventListener("input", (e) => {
+      const d = e.target.value.replace(/\D/g, "").slice(0, 9);
+      e.target.value = d;
+      $("#nf-phone-field") && $("#nf-phone-field").classList.remove("error");
+      $("#nf-phone-error") && $("#nf-phone-error").classList.add("hidden");
+    });
+
+  $("#nf-email-input") &&
+    $("#nf-email-input").addEventListener("input", () => {
+      $("#nf-email-field") && $("#nf-email-field").classList.remove("error");
+    });
 
   $("#bank-search") &&
     $("#bank-search").addEventListener("input", (e) => {

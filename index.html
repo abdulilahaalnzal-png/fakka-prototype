@@ -10,12 +10,12 @@
   <meta name="mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="default" />
   <meta name="apple-mobile-web-app-title" content="فكة" />
-  <link rel="manifest" href="manifest.json?v=20261116t" />
+  <link rel="manifest" href="manifest.json?v=20261116u" />
   <link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
   <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png" />
   <title>فكة — نسخة تجريبية للتصميم</title>
-  <link rel="stylesheet" href="css/design.css?v=20261116t" />
-  <link rel="stylesheet" href="css/proto.css?v=20261116t" />
+  <link rel="stylesheet" href="css/design.css?v=20261116u" />
+  <link rel="stylesheet" href="css/proto.css?v=20261116u" />
 </head>
 <body>
   <div id="app">
@@ -68,8 +68,397 @@
               </div>
             </div>
             <div class="welcome-actions">
-              <button type="button" class="btn btn-primary" data-action="signup">إنشاء حساب</button>
-              <button type="button" class="btn btn-secondary" data-action="login">تسجيل الدخول</button>
+              <button type="button" class="btn btn-primary btn-ico" data-action="nafath-start"><svg width="22" height="22" viewBox="0 0 48 48" fill="none" aria-hidden="true">
+  <rect x="5" y="11" width="38" height="26" rx="6" stroke="currentColor" stroke-width="2.4"/>
+  <circle cx="17" cy="22" r="4" stroke="currentColor" stroke-width="2"/>
+  <path d="M10 32c1.6-4 13-4 14.6 0" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+  <path d="M27 20h11M27 26h8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+</svg><span>الدخول بنفاذ</span></button>
+              <button type="button" class="btn btn-secondary" data-action="login-phone">الدخول برقم الجوال</button>
+              <p class="nafath-note">التحقق يتم عبر منصة النفاذ الوطني الموحد.</p>
+            </div>
+          </div>
+<div class="home-indicator"></div>
+
+        </div>
+            </section><section class="view" data-view="nid" hidden>
+        <div class="phone canvas">
+<div class="status-bar">
+    <span class="sb-time">9:41</span>
+    <div class="sb-icons">
+      <svg width="18" height="12" viewBox="0 0 18 12" fill="#1A1D1C" aria-hidden="true">
+        <rect x="0" y="7" width="3" height="5" rx="0.6" opacity="0.35"/>
+        <rect x="4.5" y="5" width="3" height="7" rx="0.6" opacity="0.5"/>
+        <rect x="9" y="2.5" width="3" height="9.5" rx="0.6" opacity="0.75"/>
+        <rect x="13.5" y="0" width="3" height="12" rx="0.6"/>
+      </svg>
+      <svg width="16" height="12" viewBox="0 0 16 12" fill="#1A1D1C" aria-hidden="true">
+        <path d="M8 3.6c1.7 0 3.27.66 4.45 1.74l1.1-1.22A8.13 8.13 0 0 0 8 1.2 8.13 8.13 0 0 0 2.45 4.12l1.1 1.22A6.27 6.27 0 0 1 8 3.6Z"/>
+        <path d="M8 7.05c.9 0 1.73.34 2.37.9l1.15-1.27A5.13 5.13 0 0 0 8 5.2a5.13 5.13 0 0 0 -3.52 1.48l1.15 1.27A3.37 3.37 0 0 1 8 7.05Z"/>
+        <circle cx="8" cy="10.3" r="1.35"/>
+      </svg>
+      <svg width="27" height="13" viewBox="0 0 27 13" aria-hidden="true">
+        <rect x="0.6" y="0.6" width="22" height="11.8" rx="3.2" stroke="#1A1D1C" stroke-width="1.2" fill="none" opacity="0.4"/>
+        <rect x="2.2" y="2.2" width="17.6" height="8.6" rx="1.8" fill="#1A1D1C"/>
+        <path d="M24.4 4.2v4.6c.9-.5 1.4-1.2 1.4-2.3s-.5-1.8-1.4-2.3Z" fill="#1A1D1C" opacity="0.45"/>
+      </svg>
+    </div>
+  </div>
+          <div class="screen-body">
+            <div class="nav"><button type="button" class="icon-btn" data-back aria-label="رجوع"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg></button></div>
+            <span class="nafath-brand"><svg width="18" height="18" viewBox="0 0 48 48" fill="none" aria-hidden="true">
+  <rect x="5" y="11" width="38" height="26" rx="6" stroke="currentColor" stroke-width="2.4"/>
+  <circle cx="17" cy="22" r="4" stroke="currentColor" stroke-width="2"/>
+  <path d="M10 32c1.6-4 13-4 14.6 0" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+  <path d="M27 20h11M27 26h8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+</svg><span>نفاذ</span></span>
+            <h2 class="screen-title" style="margin-top:14px">أدخل رقم الهوية</h2>
+            <p class="screen-desc">رقم الهوية الوطنية أو الإقامة، مكوّن من 10 أرقام.</p>
+            <div class="form">
+              <div>
+                <div class="field-label"><span>رقم الهوية</span></div>
+                <div class="nid-field" id="nid-field">
+                  <input id="nid-input" type="text" inputmode="numeric" maxlength="16" placeholder="1XXXXXXXXX" dir="ltr" autocomplete="off" aria-label="رقم الهوية"/>
+                </div>
+                <div class="field-error hidden" id="nid-error"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1.8"/><path d="M12 7.5v6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><circle cx="12" cy="16.5" r="1.1" fill="currentColor"/></svg><span>رقم الهوية غير صحيح. تأكد أنه 10 أرقام ويبدأ بـ 1 للمواطن أو 2 للمقيم.</span></div>
+              </div>
+              <label class="check" id="nid-terms-row">
+                <span class="check-box on" id="nid-terms-box"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l5 5 9-11"/></svg></span>
+                <span class="check-text">أوافق على <a class="link" href="#" data-action="noop">الشروط والأحكام</a> و<a class="link" href="#" data-action="noop">سياسة الخصوصية</a></span>
+              </label>
+            </div>
+            <p class="nafath-note start">التحقق يتم عبر منصة النفاذ الوطني الموحد.</p>
+            <p class="nafath-note start" style="margin-top:8px">للتجربة: <span dir="ltr">1098765432</span> يُعامل كحساب قائم.</p>
+            <div class="bottom">
+              <button type="button" class="btn btn-primary" data-action="submit-nid">متابعة</button>
+            </div>
+          </div>
+<div class="home-indicator"></div>
+
+        </div>
+      </section><section class="view" data-view="nafath-wait" hidden>
+        <div class="phone canvas">
+<div class="status-bar">
+    <span class="sb-time">9:41</span>
+    <div class="sb-icons">
+      <svg width="18" height="12" viewBox="0 0 18 12" fill="#1A1D1C" aria-hidden="true">
+        <rect x="0" y="7" width="3" height="5" rx="0.6" opacity="0.35"/>
+        <rect x="4.5" y="5" width="3" height="7" rx="0.6" opacity="0.5"/>
+        <rect x="9" y="2.5" width="3" height="9.5" rx="0.6" opacity="0.75"/>
+        <rect x="13.5" y="0" width="3" height="12" rx="0.6"/>
+      </svg>
+      <svg width="16" height="12" viewBox="0 0 16 12" fill="#1A1D1C" aria-hidden="true">
+        <path d="M8 3.6c1.7 0 3.27.66 4.45 1.74l1.1-1.22A8.13 8.13 0 0 0 8 1.2 8.13 8.13 0 0 0 2.45 4.12l1.1 1.22A6.27 6.27 0 0 1 8 3.6Z"/>
+        <path d="M8 7.05c.9 0 1.73.34 2.37.9l1.15-1.27A5.13 5.13 0 0 0 8 5.2a5.13 5.13 0 0 0 -3.52 1.48l1.15 1.27A3.37 3.37 0 0 1 8 7.05Z"/>
+        <circle cx="8" cy="10.3" r="1.35"/>
+      </svg>
+      <svg width="27" height="13" viewBox="0 0 27 13" aria-hidden="true">
+        <rect x="0.6" y="0.6" width="22" height="11.8" rx="3.2" stroke="#1A1D1C" stroke-width="1.2" fill="none" opacity="0.4"/>
+        <rect x="2.2" y="2.2" width="17.6" height="8.6" rx="1.8" fill="#1A1D1C"/>
+        <path d="M24.4 4.2v4.6c.9-.5 1.4-1.2 1.4-2.3s-.5-1.8-1.4-2.3Z" fill="#1A1D1C" opacity="0.45"/>
+      </svg>
+    </div>
+  </div>
+          <div class="screen-body">
+            <div class="nav"><button type="button" class="icon-btn" data-back aria-label="رجوع"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg></button></div>
+            <span class="nafath-brand"><svg width="18" height="18" viewBox="0 0 48 48" fill="none" aria-hidden="true">
+  <rect x="5" y="11" width="38" height="26" rx="6" stroke="currentColor" stroke-width="2.4"/>
+  <circle cx="17" cy="22" r="4" stroke="currentColor" stroke-width="2"/>
+  <path d="M10 32c1.6-4 13-4 14.6 0" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+  <path d="M27 20h11M27 26h8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+</svg><span>نفاذ</span></span>
+            <h2 class="screen-title" style="margin-top:14px">أكّد الطلب في تطبيق نفاذ</h2>
+            <p class="screen-desc">افتح تطبيق نفاذ واختر الرقم الظاهر تحت.</p>
+            <div class="nafath-code-card">
+              <div class="nafath-code-label">الرقم المطلوب</div>
+              <div class="nafath-code" dir="ltr" id="nafath-code">47</div>
+              <p class="nafath-count">ينتهي الطلب خلال <b id="nafath-count">02:00</b></p>
+            </div>
+            <div class="demo-preview">
+              <div class="dp-k">معاينة تجريبية — لن تظهر في التطبيق النهائي</div>
+              <div class="dp-row">
+                <button type="button" data-action="nafath-approve">قبول</button>
+                <button type="button" data-action="nafath-reject">رفض</button>
+                <button type="button" data-action="nafath-expire">انتهاء الوقت</button>
+                <button type="button" data-action="nafath-down">غير متاح</button>
+              </div>
+            </div>
+            <ol class="nafath-steps">
+              <li><span class="nafath-step-n">1</span><span>افتح تطبيق نفاذ على جوالك.</span></li>
+              <li><span class="nafath-step-n">2</span><span>اضغط على الرقم المطابق للرقم الظاهر هنا.</span></li>
+              <li><span class="nafath-step-n">3</span><span>أكّد ببصمتك أو وجهك.</span></li>
+            </ol>
+            <p class="nafath-note start">التحقق يتم عبر منصة النفاذ الوطني الموحد.</p>
+            <div class="bottom">
+              <button type="button" class="btn btn-primary" data-action="open-nafath-app">افتح تطبيق نفاذ</button>
+              <button type="button" class="btn btn-ghost" data-back>إلغاء</button>
+            </div>
+          </div>
+<div class="home-indicator"></div>
+
+        </div>
+      </section><section class="view" data-view="nafath-ok" hidden>
+        <div class="phone canvas">
+<div class="status-bar">
+    <span class="sb-time">9:41</span>
+    <div class="sb-icons">
+      <svg width="18" height="12" viewBox="0 0 18 12" fill="#1A1D1C" aria-hidden="true">
+        <rect x="0" y="7" width="3" height="5" rx="0.6" opacity="0.35"/>
+        <rect x="4.5" y="5" width="3" height="7" rx="0.6" opacity="0.5"/>
+        <rect x="9" y="2.5" width="3" height="9.5" rx="0.6" opacity="0.75"/>
+        <rect x="13.5" y="0" width="3" height="12" rx="0.6"/>
+      </svg>
+      <svg width="16" height="12" viewBox="0 0 16 12" fill="#1A1D1C" aria-hidden="true">
+        <path d="M8 3.6c1.7 0 3.27.66 4.45 1.74l1.1-1.22A8.13 8.13 0 0 0 8 1.2 8.13 8.13 0 0 0 2.45 4.12l1.1 1.22A6.27 6.27 0 0 1 8 3.6Z"/>
+        <path d="M8 7.05c.9 0 1.73.34 2.37.9l1.15-1.27A5.13 5.13 0 0 0 8 5.2a5.13 5.13 0 0 0 -3.52 1.48l1.15 1.27A3.37 3.37 0 0 1 8 7.05Z"/>
+        <circle cx="8" cy="10.3" r="1.35"/>
+      </svg>
+      <svg width="27" height="13" viewBox="0 0 27 13" aria-hidden="true">
+        <rect x="0.6" y="0.6" width="22" height="11.8" rx="3.2" stroke="#1A1D1C" stroke-width="1.2" fill="none" opacity="0.4"/>
+        <rect x="2.2" y="2.2" width="17.6" height="8.6" rx="1.8" fill="#1A1D1C"/>
+        <path d="M24.4 4.2v4.6c.9-.5 1.4-1.2 1.4-2.3s-.5-1.8-1.4-2.3Z" fill="#1A1D1C" opacity="0.45"/>
+      </svg>
+    </div>
+  </div>
+          <div class="screen-body">
+            <div class="success-wrap">
+              <svg class="success-badge" viewBox="0 0 96 96" fill="none" aria-hidden="true">
+  <circle cx="48" cy="48" r="46" fill="#F8F1D8"/>
+  <circle cx="48" cy="48" r="36" fill="#0B6E56"/>
+  <path d="M32 49.5l10.5 10.5L66 36.5" stroke="#fff" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
+              <h2 class="screen-title">تم التحقق من هويتك</h2>
+              <p class="screen-desc">هذي بياناتك الرسمية. تأكد أن الاسم صحيح ثم أكّد.</p>
+              <div class="nafath-name-card">
+                <div class="nk">الاسم من نفاذ</div>
+                <div class="nn" id="nafath-official-name">فهد العتيبي</div>
+                <div class="nm">ما تحتاج تكتب اسمك يدويًا</div>
+              </div>
+            </div>
+            <p class="nafath-note">التحقق يتم عبر منصة النفاذ الوطني الموحد.</p>
+            <div class="bottom">
+              <button type="button" class="btn btn-primary" data-action="confirm-nafath">تأكيد والمتابعة</button>
+            </div>
+          </div>
+<div class="home-indicator"></div>
+
+        </div>
+      </section><section class="view" data-view="nafath-phone" hidden>
+        <div class="phone canvas">
+<div class="status-bar">
+    <span class="sb-time">9:41</span>
+    <div class="sb-icons">
+      <svg width="18" height="12" viewBox="0 0 18 12" fill="#1A1D1C" aria-hidden="true">
+        <rect x="0" y="7" width="3" height="5" rx="0.6" opacity="0.35"/>
+        <rect x="4.5" y="5" width="3" height="7" rx="0.6" opacity="0.5"/>
+        <rect x="9" y="2.5" width="3" height="9.5" rx="0.6" opacity="0.75"/>
+        <rect x="13.5" y="0" width="3" height="12" rx="0.6"/>
+      </svg>
+      <svg width="16" height="12" viewBox="0 0 16 12" fill="#1A1D1C" aria-hidden="true">
+        <path d="M8 3.6c1.7 0 3.27.66 4.45 1.74l1.1-1.22A8.13 8.13 0 0 0 8 1.2 8.13 8.13 0 0 0 2.45 4.12l1.1 1.22A6.27 6.27 0 0 1 8 3.6Z"/>
+        <path d="M8 7.05c.9 0 1.73.34 2.37.9l1.15-1.27A5.13 5.13 0 0 0 8 5.2a5.13 5.13 0 0 0 -3.52 1.48l1.15 1.27A3.37 3.37 0 0 1 8 7.05Z"/>
+        <circle cx="8" cy="10.3" r="1.35"/>
+      </svg>
+      <svg width="27" height="13" viewBox="0 0 27 13" aria-hidden="true">
+        <rect x="0.6" y="0.6" width="22" height="11.8" rx="3.2" stroke="#1A1D1C" stroke-width="1.2" fill="none" opacity="0.4"/>
+        <rect x="2.2" y="2.2" width="17.6" height="8.6" rx="1.8" fill="#1A1D1C"/>
+        <path d="M24.4 4.2v4.6c.9-.5 1.4-1.2 1.4-2.3s-.5-1.8-1.4-2.3Z" fill="#1A1D1C" opacity="0.45"/>
+      </svg>
+    </div>
+  </div>
+          <div class="screen-body">
+            <div class="nav"><button type="button" class="icon-btn" data-back aria-label="رجوع"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg></button></div>
+            <h2 class="screen-title">أضف رقم جوالك</h2>
+            <p class="screen-desc">نحتاجه للتنبيهات ورسائل التحقق. هويتك تم التحقق منها عبر نفاذ.</p>
+            <div class="form">
+              <div>
+                <div class="field-label"><span>رقم الجوال</span></div>
+                <div class="phone-field" id="nf-phone-field">
+                  <div class="prefix"><span class="prefix-cc">SA</span><span>+966</span></div>
+                  <input id="nf-phone-input" type="tel" inputmode="numeric" autocomplete="tel-national" maxlength="9" placeholder="5XXXXXXXX" aria-label="رقم الجوال"/>
+                </div>
+                <div class="field-error hidden" id="nf-phone-error"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1.8"/><path d="M12 7.5v6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><circle cx="12" cy="16.5" r="1.1" fill="currentColor"/></svg><span>رقم الجوال غير صحيح. تأكد أنه يبدأ بـ 5 ويتكوّن من 9 أرقام.</span></div>
+              </div>
+            </div>
+            <div class="bottom">
+              <button type="button" class="btn btn-primary" data-action="submit-nafath-phone">متابعة</button>
+            </div>
+          </div>
+<div class="home-indicator"></div>
+
+        </div>
+      </section><section class="view" data-view="nafath-email" hidden>
+        <div class="phone canvas">
+<div class="status-bar">
+    <span class="sb-time">9:41</span>
+    <div class="sb-icons">
+      <svg width="18" height="12" viewBox="0 0 18 12" fill="#1A1D1C" aria-hidden="true">
+        <rect x="0" y="7" width="3" height="5" rx="0.6" opacity="0.35"/>
+        <rect x="4.5" y="5" width="3" height="7" rx="0.6" opacity="0.5"/>
+        <rect x="9" y="2.5" width="3" height="9.5" rx="0.6" opacity="0.75"/>
+        <rect x="13.5" y="0" width="3" height="12" rx="0.6"/>
+      </svg>
+      <svg width="16" height="12" viewBox="0 0 16 12" fill="#1A1D1C" aria-hidden="true">
+        <path d="M8 3.6c1.7 0 3.27.66 4.45 1.74l1.1-1.22A8.13 8.13 0 0 0 8 1.2 8.13 8.13 0 0 0 2.45 4.12l1.1 1.22A6.27 6.27 0 0 1 8 3.6Z"/>
+        <path d="M8 7.05c.9 0 1.73.34 2.37.9l1.15-1.27A5.13 5.13 0 0 0 8 5.2a5.13 5.13 0 0 0 -3.52 1.48l1.15 1.27A3.37 3.37 0 0 1 8 7.05Z"/>
+        <circle cx="8" cy="10.3" r="1.35"/>
+      </svg>
+      <svg width="27" height="13" viewBox="0 0 27 13" aria-hidden="true">
+        <rect x="0.6" y="0.6" width="22" height="11.8" rx="3.2" stroke="#1A1D1C" stroke-width="1.2" fill="none" opacity="0.4"/>
+        <rect x="2.2" y="2.2" width="17.6" height="8.6" rx="1.8" fill="#1A1D1C"/>
+        <path d="M24.4 4.2v4.6c.9-.5 1.4-1.2 1.4-2.3s-.5-1.8-1.4-2.3Z" fill="#1A1D1C" opacity="0.45"/>
+      </svg>
+    </div>
+  </div>
+          <div class="screen-body">
+            <div class="nav"><button type="button" class="icon-btn" data-back aria-label="رجوع"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg></button></div>
+            <h2 class="screen-title">أضف بريدك</h2>
+            <p class="screen-desc">اسمك وصلنا من نفاذ. بقي البريد عشان نكمّل ملفك.</p>
+            <div class="form">
+              <div>
+                <div class="field-label"><span>الاسم الكامل</span></div>
+                <div class="nafath-readonly" id="nf-name-readonly">فهد العتيبي</div>
+              </div>
+              <div>
+                <div class="field-label"><span>البريد الإلكتروني</span></div>
+                <div class="input ltr" id="nf-email-field"><input id="nf-email-input" type="email" autocomplete="email" placeholder="name@email.com" dir="ltr"/></div>
+                <p class="field-hint">حفظ البريد يمنحك <b>20 نقطة</b>، مرة واحدة.</p>
+              </div>
+            </div>
+            <div class="bottom">
+              <button type="button" class="btn btn-primary" data-action="submit-nafath-email">متابعة</button>
+            </div>
+          </div>
+<div class="home-indicator"></div>
+
+        </div>
+      </section><section class="view" data-view="nafath-rejected" hidden>
+        <div class="phone canvas">
+<div class="status-bar">
+    <span class="sb-time">9:41</span>
+    <div class="sb-icons">
+      <svg width="18" height="12" viewBox="0 0 18 12" fill="#1A1D1C" aria-hidden="true">
+        <rect x="0" y="7" width="3" height="5" rx="0.6" opacity="0.35"/>
+        <rect x="4.5" y="5" width="3" height="7" rx="0.6" opacity="0.5"/>
+        <rect x="9" y="2.5" width="3" height="9.5" rx="0.6" opacity="0.75"/>
+        <rect x="13.5" y="0" width="3" height="12" rx="0.6"/>
+      </svg>
+      <svg width="16" height="12" viewBox="0 0 16 12" fill="#1A1D1C" aria-hidden="true">
+        <path d="M8 3.6c1.7 0 3.27.66 4.45 1.74l1.1-1.22A8.13 8.13 0 0 0 8 1.2 8.13 8.13 0 0 0 2.45 4.12l1.1 1.22A6.27 6.27 0 0 1 8 3.6Z"/>
+        <path d="M8 7.05c.9 0 1.73.34 2.37.9l1.15-1.27A5.13 5.13 0 0 0 8 5.2a5.13 5.13 0 0 0 -3.52 1.48l1.15 1.27A3.37 3.37 0 0 1 8 7.05Z"/>
+        <circle cx="8" cy="10.3" r="1.35"/>
+      </svg>
+      <svg width="27" height="13" viewBox="0 0 27 13" aria-hidden="true">
+        <rect x="0.6" y="0.6" width="22" height="11.8" rx="3.2" stroke="#1A1D1C" stroke-width="1.2" fill="none" opacity="0.4"/>
+        <rect x="2.2" y="2.2" width="17.6" height="8.6" rx="1.8" fill="#1A1D1C"/>
+        <path d="M24.4 4.2v4.6c.9-.5 1.4-1.2 1.4-2.3s-.5-1.8-1.4-2.3Z" fill="#1A1D1C" opacity="0.45"/>
+      </svg>
+    </div>
+  </div>
+          <div class="screen-body">
+            <div class="success-wrap">
+              <svg class="success-badge" viewBox="0 0 96 96" fill="none" aria-hidden="true">
+  <circle cx="48" cy="48" r="46" fill="#FDECEC"/>
+  <circle cx="48" cy="48" r="36" fill="#C2302A"/>
+  <path d="M36 36l24 24M60 36L36 60" stroke="#fff" stroke-width="5" stroke-linecap="round"/>
+</svg>
+              <h2 class="screen-title">ما اكتمل التحقق</h2>
+              <p class="screen-desc">طلب التحقق رُفض من تطبيق نفاذ. إذا ما كنت أنت اللي رفضت، حاول مرة ثانية أو ادخل برقم الجوال.</p>
+            </div>
+            <p class="nafath-note">التحقق يتم عبر منصة النفاذ الوطني الموحد.</p>
+            <div class="bottom">
+              <button type="button" class="btn btn-primary" data-action="nafath-retry">إعادة المحاولة</button>
+              <button type="button" class="btn btn-secondary" data-action="login-phone">الدخول برقم الجوال</button>
+            </div>
+          </div>
+<div class="home-indicator"></div>
+
+        </div>
+      </section><section class="view" data-view="nafath-expired" hidden>
+        <div class="phone canvas">
+<div class="status-bar">
+    <span class="sb-time">9:41</span>
+    <div class="sb-icons">
+      <svg width="18" height="12" viewBox="0 0 18 12" fill="#1A1D1C" aria-hidden="true">
+        <rect x="0" y="7" width="3" height="5" rx="0.6" opacity="0.35"/>
+        <rect x="4.5" y="5" width="3" height="7" rx="0.6" opacity="0.5"/>
+        <rect x="9" y="2.5" width="3" height="9.5" rx="0.6" opacity="0.75"/>
+        <rect x="13.5" y="0" width="3" height="12" rx="0.6"/>
+      </svg>
+      <svg width="16" height="12" viewBox="0 0 16 12" fill="#1A1D1C" aria-hidden="true">
+        <path d="M8 3.6c1.7 0 3.27.66 4.45 1.74l1.1-1.22A8.13 8.13 0 0 0 8 1.2 8.13 8.13 0 0 0 2.45 4.12l1.1 1.22A6.27 6.27 0 0 1 8 3.6Z"/>
+        <path d="M8 7.05c.9 0 1.73.34 2.37.9l1.15-1.27A5.13 5.13 0 0 0 8 5.2a5.13 5.13 0 0 0 -3.52 1.48l1.15 1.27A3.37 3.37 0 0 1 8 7.05Z"/>
+        <circle cx="8" cy="10.3" r="1.35"/>
+      </svg>
+      <svg width="27" height="13" viewBox="0 0 27 13" aria-hidden="true">
+        <rect x="0.6" y="0.6" width="22" height="11.8" rx="3.2" stroke="#1A1D1C" stroke-width="1.2" fill="none" opacity="0.4"/>
+        <rect x="2.2" y="2.2" width="17.6" height="8.6" rx="1.8" fill="#1A1D1C"/>
+        <path d="M24.4 4.2v4.6c.9-.5 1.4-1.2 1.4-2.3s-.5-1.8-1.4-2.3Z" fill="#1A1D1C" opacity="0.45"/>
+      </svg>
+    </div>
+  </div>
+          <div class="screen-body">
+            <div class="nav"><button type="button" class="icon-btn" data-back aria-label="رجوع"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg></button></div>
+            <span class="nafath-brand"><svg width="18" height="18" viewBox="0 0 48 48" fill="none" aria-hidden="true">
+  <rect x="5" y="11" width="38" height="26" rx="6" stroke="currentColor" stroke-width="2.4"/>
+  <circle cx="17" cy="22" r="4" stroke="currentColor" stroke-width="2"/>
+  <path d="M10 32c1.6-4 13-4 14.6 0" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+  <path d="M27 20h11M27 26h8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+</svg><span>نفاذ</span></span>
+            <h2 class="screen-title" style="margin-top:14px">انتهى وقت الطلب</h2>
+            <p class="screen-desc">ما وصلنا تأكيد خلال الوقت المحدد. اضغط «إعادة الإرسال» عشان نطلع لك رقم جديد.</p>
+            <div class="nafath-code-card" style="opacity:0.55">
+              <div class="nafath-code-label">الرقم السابق</div>
+              <div class="nafath-code" dir="ltr" id="nafath-expired-code">47</div>
+              <p class="nafath-count">انتهى الوقت · <b>00:00</b></p>
+            </div>
+            <p class="nafath-note start">التحقق يتم عبر منصة النفاذ الوطني الموحد.</p>
+            <div class="bottom">
+              <button type="button" class="btn btn-primary" data-action="nafath-resend">إعادة الإرسال</button>
+              <button type="button" class="btn btn-secondary" data-action="login-phone">الدخول برقم الجوال</button>
+            </div>
+          </div>
+<div class="home-indicator"></div>
+
+        </div>
+      </section><section class="view" data-view="nafath-down" hidden>
+        <div class="phone canvas">
+<div class="status-bar">
+    <span class="sb-time">9:41</span>
+    <div class="sb-icons">
+      <svg width="18" height="12" viewBox="0 0 18 12" fill="#1A1D1C" aria-hidden="true">
+        <rect x="0" y="7" width="3" height="5" rx="0.6" opacity="0.35"/>
+        <rect x="4.5" y="5" width="3" height="7" rx="0.6" opacity="0.5"/>
+        <rect x="9" y="2.5" width="3" height="9.5" rx="0.6" opacity="0.75"/>
+        <rect x="13.5" y="0" width="3" height="12" rx="0.6"/>
+      </svg>
+      <svg width="16" height="12" viewBox="0 0 16 12" fill="#1A1D1C" aria-hidden="true">
+        <path d="M8 3.6c1.7 0 3.27.66 4.45 1.74l1.1-1.22A8.13 8.13 0 0 0 8 1.2 8.13 8.13 0 0 0 2.45 4.12l1.1 1.22A6.27 6.27 0 0 1 8 3.6Z"/>
+        <path d="M8 7.05c.9 0 1.73.34 2.37.9l1.15-1.27A5.13 5.13 0 0 0 8 5.2a5.13 5.13 0 0 0 -3.52 1.48l1.15 1.27A3.37 3.37 0 0 1 8 7.05Z"/>
+        <circle cx="8" cy="10.3" r="1.35"/>
+      </svg>
+      <svg width="27" height="13" viewBox="0 0 27 13" aria-hidden="true">
+        <rect x="0.6" y="0.6" width="22" height="11.8" rx="3.2" stroke="#1A1D1C" stroke-width="1.2" fill="none" opacity="0.4"/>
+        <rect x="2.2" y="2.2" width="17.6" height="8.6" rx="1.8" fill="#1A1D1C"/>
+        <path d="M24.4 4.2v4.6c.9-.5 1.4-1.2 1.4-2.3s-.5-1.8-1.4-2.3Z" fill="#1A1D1C" opacity="0.45"/>
+      </svg>
+    </div>
+  </div>
+          <div class="screen-body">
+            <div class="success-wrap">
+              <svg class="success-badge" viewBox="0 0 96 96" fill="none" aria-hidden="true">
+  <circle cx="48" cy="48" r="46" fill="#F8F1D8"/>
+  <circle cx="48" cy="48" r="36" fill="#C9A84C"/>
+  <path d="M48 30v22" stroke="#fff" stroke-width="5" stroke-linecap="round"/>
+  <circle cx="48" cy="64" r="3.2" fill="#fff"/>
+</svg>
+              <h2 class="screen-title">نفاذ غير متاح حاليًا</h2>
+              <p class="screen-desc">ما قدرنا نبدأ التحقق عبر منصة النفاذ الوطني الموحد. تقدر تدخل برقم الجوال، وإذا رجع نفاذ تقدر تربط هويتك لاحقًا.</p>
+            </div>
+            <p class="nafath-note">التحقق يتم عبر منصة النفاذ الوطني الموحد.</p>
+            <div class="bottom">
+              <button type="button" class="btn btn-primary" data-action="login-phone">الدخول برقم الجوال</button>
+              <button type="button" class="btn btn-ghost" data-action="nafath-later">المحاولة لاحقًا</button>
             </div>
           </div>
 <div class="home-indicator"></div>
@@ -102,6 +491,7 @@
 <div class="nav"><button type="button" class="icon-btn" data-back type="button" data-back aria-label="رجوع"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg></button></div>
             <h2 class="screen-title">أدخل رقم جوالك</h2>
             <p class="screen-desc">سنرسل لك رمز تحقق عبر رسالة نصية إلى هذا الرقم.</p>
+            <p id="phone-alt-line">ما عندك حساب؟ <a class="link" href="#" data-action="signup-phone">أنشئ حساب برقم الجوال</a></p>
             <div class="form">
               <div>
                 <div class="field-label"><span>رقم الجوال</span></div>
@@ -1243,6 +1633,6 @@
 
     </div>
   </div>
-  <script src="js/app.js?v=20261116t"></script>
+  <script src="js/app.js?v=20261116u"></script>
 </body>
 </html>
