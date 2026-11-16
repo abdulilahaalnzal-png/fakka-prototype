@@ -184,6 +184,11 @@ body {
   #notif-banner {
     position: fixed;
   }
+  .scrim { z-index: 29; }
+  .sheet {
+    z-index: 30;
+    padding-bottom: calc(36px + env(safe-area-inset-bottom, 0px));
+  }
   #notif-banner {
     top: calc(max(env(safe-area-inset-top, 0px), 16px) + 8px);
     left: 12px;
@@ -324,7 +329,7 @@ body {
 .btn:active { transform: scale(0.99); opacity: 0.92; }
 .btn[disabled] { opacity: 0.45; pointer-events: none; }
 .icon-btn, .bell-btn, .n-row, .n-demo, .nset-row, .list-row, .txn, .txn-row, .filter-chip, .seg, .preset, .tab,
-.choice-btn, .pause-action, .link, .check, .pts-row, .nav-card {
+.choice-btn, .pause-action, .link, .check, .pts-row, .nav-card, .h-cat, .h-reason, .h-attach, .h-faq-q, .h-faq-more {
   cursor: pointer; -webkit-tap-highlight-color: transparent;
 }
 .hidden { display: none !important; }
@@ -368,6 +373,20 @@ body {
 .month-pill { pointer-events: none; }
 
 .celebrate, .scrim, .sheet { position: absolute; }
+
+@media (max-width: 600px) {
+  /* Keep sheets in the viewport; a later absolute rule must not win */
+  .sheet, .celebrate, .scrim, #levelup-overlay, #notif-banner {
+    position: fixed !important;
+  }
+  .sheet {
+    padding-bottom: calc(36px + env(safe-area-inset-bottom, 0px)) !important;
+    max-height: 92svh;
+    overflow-x: hidden;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+}
 
 button.icon-btn, button.btn {
   appearance: none; -webkit-appearance: none;

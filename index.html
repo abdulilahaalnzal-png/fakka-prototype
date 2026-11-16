@@ -10,13 +10,14 @@
   <meta name="mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="default" />
   <meta name="apple-mobile-web-app-title" content="فكة" />
-  <link rel="manifest" href="manifest.json?v=20261116w" />
+  <link rel="manifest" href="manifest.json?v=20261116x" />
   <link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
   <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png" />
   <title>فكة — نسخة تجريبية للتصميم</title>
-  <link rel="stylesheet" href="css/design.css?v=20261116w" />
-  <link rel="stylesheet" href="css/proto.css?v=20261116w" />
-  <link rel="stylesheet" href="css/notifications.css?v=20261116w" />
+  <link rel="stylesheet" href="css/design.css?v=20261116x" />
+  <link rel="stylesheet" href="css/proto.css?v=20261116x" />
+  <link rel="stylesheet" href="css/notifications.css?v=20261116x" />
+  <link rel="stylesheet" href="css/support.css?v=20261116x" />
 </head>
 <body>
   <div id="app">
@@ -1272,6 +1273,7 @@
               <div class="receipt-row save"><span>الفكة المدّخرة</span><span class="amt" dir="ltr" id="txn-save">+3.00 ر.س</span></div>
             </div>
             <p class="screen-desc" style="margin-top:14px">هذي الفكة انحفظت من عملية الشراء نفسها، وتنتظر مع باقي المبلغ إلى عتبة التحويل 20 ريال.</p>
+            <button type="button" class="btn btn-secondary" data-action="open-report" style="margin-top:12px">الإبلاغ عن مشكلة</button>
           </div>
         </div>
       </section><section class="view" data-view="settings" hidden>
@@ -1355,6 +1357,16 @@
               </button>
               <button type="button" class="list-row last" data-nav="profile-main" style="width:100%;background:none;border:0;font:inherit;color:inherit;text-align:inherit;">
                 <span class="row-title">الملف الشخصي</span>
+                <svg class="row-chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>
+              </button>
+            </div>
+            <div class="ob-label" style="margin:16px 4px 8px">الدعم</div>
+            <div class="list-card">
+              <button type="button" class="list-row last" data-nav="help" style="width:100%;background:none;border:0;font:inherit;color:inherit;text-align:inherit;">
+                <div>
+                  <div class="row-title">مساعدة ودعم</div>
+                  <div style="font-size:12.5px;color:var(--fk-ink-secondary);margin-top:2px">الأسئلة، التواصل، والشروط</div>
+                </div>
                 <svg class="row-chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>
               </button>
             </div>
@@ -1756,6 +1768,7 @@
           </div>
           <div class="home-indicator"></div>
         </div>
+      </section>
 
             <div class="celebrate hidden" id="levelup-overlay" role="dialog" aria-label="وصلت إلى فضي">
         <div class="celebrate-card">
@@ -1775,6 +1788,303 @@
         </div>
       </div>
 
+<section class="view" data-view="help" hidden>
+        <div class="phone canvas">
+<div class="status-bar">
+    <span class="sb-time">9:41</span>
+    <div class="sb-icons">
+      <svg width="18" height="12" viewBox="0 0 18 12" fill="#1A1D1C" aria-hidden="true">
+        <rect x="0" y="7" width="3" height="5" rx="0.6" opacity="0.35"/>
+        <rect x="4.5" y="5" width="3" height="7" rx="0.6" opacity="0.5"/>
+        <rect x="9" y="2.5" width="3" height="9.5" rx="0.6" opacity="0.75"/>
+        <rect x="13.5" y="0" width="3" height="12" rx="0.6"/>
+      </svg>
+      <svg width="16" height="12" viewBox="0 0 16 12" fill="#1A1D1C" aria-hidden="true">
+        <path d="M8 3.6c1.7 0 3.27.66 4.45 1.74l1.1-1.22A8.13 8.13 0 0 0 8 1.2 8.13 8.13 0 0 0 2.45 4.12l1.1 1.22A6.27 6.27 0 0 1 8 3.6Z"/>
+        <path d="M8 7.05c.9 0 1.73.34 2.37.9l1.15-1.27A5.13 5.13 0 0 0 8 5.2a5.13 5.13 0 0 0 -3.52 1.48l1.15 1.27A3.37 3.37 0 0 1 8 7.05Z"/>
+        <circle cx="8" cy="10.3" r="1.35"/>
+      </svg>
+      <svg width="27" height="13" viewBox="0 0 27 13" aria-hidden="true">
+        <rect x="0.6" y="0.6" width="22" height="11.8" rx="3.2" stroke="#1A1D1C" stroke-width="1.2" fill="none" opacity="0.4"/>
+        <rect x="2.2" y="2.2" width="17.6" height="8.6" rx="1.8" fill="#1A1D1C"/>
+        <path d="M24.4 4.2v4.6c.9-.5 1.4-1.2 1.4-2.3s-.5-1.8-1.4-2.3Z" fill="#1A1D1C" opacity="0.45"/>
+      </svg>
+    </div>
+  </div>
+          <div class="screen-body" id="help-home-body"></div>
+          <div class="home-indicator"></div>
+        </div>
+      </section>
+<section class="view" data-view="help-category" hidden>
+        <div class="phone canvas">
+<div class="status-bar">
+    <span class="sb-time">9:41</span>
+    <div class="sb-icons">
+      <svg width="18" height="12" viewBox="0 0 18 12" fill="#1A1D1C" aria-hidden="true">
+        <rect x="0" y="7" width="3" height="5" rx="0.6" opacity="0.35"/>
+        <rect x="4.5" y="5" width="3" height="7" rx="0.6" opacity="0.5"/>
+        <rect x="9" y="2.5" width="3" height="9.5" rx="0.6" opacity="0.75"/>
+        <rect x="13.5" y="0" width="3" height="12" rx="0.6"/>
+      </svg>
+      <svg width="16" height="12" viewBox="0 0 16 12" fill="#1A1D1C" aria-hidden="true">
+        <path d="M8 3.6c1.7 0 3.27.66 4.45 1.74l1.1-1.22A8.13 8.13 0 0 0 8 1.2 8.13 8.13 0 0 0 2.45 4.12l1.1 1.22A6.27 6.27 0 0 1 8 3.6Z"/>
+        <path d="M8 7.05c.9 0 1.73.34 2.37.9l1.15-1.27A5.13 5.13 0 0 0 8 5.2a5.13 5.13 0 0 0 -3.52 1.48l1.15 1.27A3.37 3.37 0 0 1 8 7.05Z"/>
+        <circle cx="8" cy="10.3" r="1.35"/>
+      </svg>
+      <svg width="27" height="13" viewBox="0 0 27 13" aria-hidden="true">
+        <rect x="0.6" y="0.6" width="22" height="11.8" rx="3.2" stroke="#1A1D1C" stroke-width="1.2" fill="none" opacity="0.4"/>
+        <rect x="2.2" y="2.2" width="17.6" height="8.6" rx="1.8" fill="#1A1D1C"/>
+        <path d="M24.4 4.2v4.6c.9-.5 1.4-1.2 1.4-2.3s-.5-1.8-1.4-2.3Z" fill="#1A1D1C" opacity="0.45"/>
+      </svg>
+    </div>
+  </div>
+          <div class="screen-body" id="help-cat-body"></div>
+          <div class="home-indicator"></div>
+        </div>
+      </section>
+<section class="view" data-view="help-article" hidden>
+        <div class="phone canvas">
+<div class="status-bar">
+    <span class="sb-time">9:41</span>
+    <div class="sb-icons">
+      <svg width="18" height="12" viewBox="0 0 18 12" fill="#1A1D1C" aria-hidden="true">
+        <rect x="0" y="7" width="3" height="5" rx="0.6" opacity="0.35"/>
+        <rect x="4.5" y="5" width="3" height="7" rx="0.6" opacity="0.5"/>
+        <rect x="9" y="2.5" width="3" height="9.5" rx="0.6" opacity="0.75"/>
+        <rect x="13.5" y="0" width="3" height="12" rx="0.6"/>
+      </svg>
+      <svg width="16" height="12" viewBox="0 0 16 12" fill="#1A1D1C" aria-hidden="true">
+        <path d="M8 3.6c1.7 0 3.27.66 4.45 1.74l1.1-1.22A8.13 8.13 0 0 0 8 1.2 8.13 8.13 0 0 0 2.45 4.12l1.1 1.22A6.27 6.27 0 0 1 8 3.6Z"/>
+        <path d="M8 7.05c.9 0 1.73.34 2.37.9l1.15-1.27A5.13 5.13 0 0 0 8 5.2a5.13 5.13 0 0 0 -3.52 1.48l1.15 1.27A3.37 3.37 0 0 1 8 7.05Z"/>
+        <circle cx="8" cy="10.3" r="1.35"/>
+      </svg>
+      <svg width="27" height="13" viewBox="0 0 27 13" aria-hidden="true">
+        <rect x="0.6" y="0.6" width="22" height="11.8" rx="3.2" stroke="#1A1D1C" stroke-width="1.2" fill="none" opacity="0.4"/>
+        <rect x="2.2" y="2.2" width="17.6" height="8.6" rx="1.8" fill="#1A1D1C"/>
+        <path d="M24.4 4.2v4.6c.9-.5 1.4-1.2 1.4-2.3s-.5-1.8-1.4-2.3Z" fill="#1A1D1C" opacity="0.45"/>
+      </svg>
+    </div>
+  </div>
+          <div class="screen-body" id="help-article-body"></div>
+          <div class="home-indicator"></div>
+        </div>
+      </section>
+<section class="view" data-view="help-faq" hidden>
+        <div class="phone canvas">
+<div class="status-bar">
+    <span class="sb-time">9:41</span>
+    <div class="sb-icons">
+      <svg width="18" height="12" viewBox="0 0 18 12" fill="#1A1D1C" aria-hidden="true">
+        <rect x="0" y="7" width="3" height="5" rx="0.6" opacity="0.35"/>
+        <rect x="4.5" y="5" width="3" height="7" rx="0.6" opacity="0.5"/>
+        <rect x="9" y="2.5" width="3" height="9.5" rx="0.6" opacity="0.75"/>
+        <rect x="13.5" y="0" width="3" height="12" rx="0.6"/>
+      </svg>
+      <svg width="16" height="12" viewBox="0 0 16 12" fill="#1A1D1C" aria-hidden="true">
+        <path d="M8 3.6c1.7 0 3.27.66 4.45 1.74l1.1-1.22A8.13 8.13 0 0 0 8 1.2 8.13 8.13 0 0 0 2.45 4.12l1.1 1.22A6.27 6.27 0 0 1 8 3.6Z"/>
+        <path d="M8 7.05c.9 0 1.73.34 2.37.9l1.15-1.27A5.13 5.13 0 0 0 8 5.2a5.13 5.13 0 0 0 -3.52 1.48l1.15 1.27A3.37 3.37 0 0 1 8 7.05Z"/>
+        <circle cx="8" cy="10.3" r="1.35"/>
+      </svg>
+      <svg width="27" height="13" viewBox="0 0 27 13" aria-hidden="true">
+        <rect x="0.6" y="0.6" width="22" height="11.8" rx="3.2" stroke="#1A1D1C" stroke-width="1.2" fill="none" opacity="0.4"/>
+        <rect x="2.2" y="2.2" width="17.6" height="8.6" rx="1.8" fill="#1A1D1C"/>
+        <path d="M24.4 4.2v4.6c.9-.5 1.4-1.2 1.4-2.3s-.5-1.8-1.4-2.3Z" fill="#1A1D1C" opacity="0.45"/>
+      </svg>
+    </div>
+  </div>
+          <div class="screen-body" id="help-faq-body"></div>
+          <div class="home-indicator"></div>
+        </div>
+      </section>
+<section class="view" data-view="help-contact" hidden>
+        <div class="phone canvas">
+<div class="status-bar">
+    <span class="sb-time">9:41</span>
+    <div class="sb-icons">
+      <svg width="18" height="12" viewBox="0 0 18 12" fill="#1A1D1C" aria-hidden="true">
+        <rect x="0" y="7" width="3" height="5" rx="0.6" opacity="0.35"/>
+        <rect x="4.5" y="5" width="3" height="7" rx="0.6" opacity="0.5"/>
+        <rect x="9" y="2.5" width="3" height="9.5" rx="0.6" opacity="0.75"/>
+        <rect x="13.5" y="0" width="3" height="12" rx="0.6"/>
+      </svg>
+      <svg width="16" height="12" viewBox="0 0 16 12" fill="#1A1D1C" aria-hidden="true">
+        <path d="M8 3.6c1.7 0 3.27.66 4.45 1.74l1.1-1.22A8.13 8.13 0 0 0 8 1.2 8.13 8.13 0 0 0 2.45 4.12l1.1 1.22A6.27 6.27 0 0 1 8 3.6Z"/>
+        <path d="M8 7.05c.9 0 1.73.34 2.37.9l1.15-1.27A5.13 5.13 0 0 0 8 5.2a5.13 5.13 0 0 0 -3.52 1.48l1.15 1.27A3.37 3.37 0 0 1 8 7.05Z"/>
+        <circle cx="8" cy="10.3" r="1.35"/>
+      </svg>
+      <svg width="27" height="13" viewBox="0 0 27 13" aria-hidden="true">
+        <rect x="0.6" y="0.6" width="22" height="11.8" rx="3.2" stroke="#1A1D1C" stroke-width="1.2" fill="none" opacity="0.4"/>
+        <rect x="2.2" y="2.2" width="17.6" height="8.6" rx="1.8" fill="#1A1D1C"/>
+        <path d="M24.4 4.2v4.6c.9-.5 1.4-1.2 1.4-2.3s-.5-1.8-1.4-2.3Z" fill="#1A1D1C" opacity="0.45"/>
+      </svg>
+    </div>
+  </div>
+          <div class="screen-body" id="help-contact-body"></div>
+          <div class="home-indicator"></div>
+        </div>
+      </section>
+<section class="view" data-view="help-report" hidden>
+        <div class="phone canvas">
+<div class="status-bar">
+    <span class="sb-time">9:41</span>
+    <div class="sb-icons">
+      <svg width="18" height="12" viewBox="0 0 18 12" fill="#1A1D1C" aria-hidden="true">
+        <rect x="0" y="7" width="3" height="5" rx="0.6" opacity="0.35"/>
+        <rect x="4.5" y="5" width="3" height="7" rx="0.6" opacity="0.5"/>
+        <rect x="9" y="2.5" width="3" height="9.5" rx="0.6" opacity="0.75"/>
+        <rect x="13.5" y="0" width="3" height="12" rx="0.6"/>
+      </svg>
+      <svg width="16" height="12" viewBox="0 0 16 12" fill="#1A1D1C" aria-hidden="true">
+        <path d="M8 3.6c1.7 0 3.27.66 4.45 1.74l1.1-1.22A8.13 8.13 0 0 0 8 1.2 8.13 8.13 0 0 0 2.45 4.12l1.1 1.22A6.27 6.27 0 0 1 8 3.6Z"/>
+        <path d="M8 7.05c.9 0 1.73.34 2.37.9l1.15-1.27A5.13 5.13 0 0 0 8 5.2a5.13 5.13 0 0 0 -3.52 1.48l1.15 1.27A3.37 3.37 0 0 1 8 7.05Z"/>
+        <circle cx="8" cy="10.3" r="1.35"/>
+      </svg>
+      <svg width="27" height="13" viewBox="0 0 27 13" aria-hidden="true">
+        <rect x="0.6" y="0.6" width="22" height="11.8" rx="3.2" stroke="#1A1D1C" stroke-width="1.2" fill="none" opacity="0.4"/>
+        <rect x="2.2" y="2.2" width="17.6" height="8.6" rx="1.8" fill="#1A1D1C"/>
+        <path d="M24.4 4.2v4.6c.9-.5 1.4-1.2 1.4-2.3s-.5-1.8-1.4-2.3Z" fill="#1A1D1C" opacity="0.45"/>
+      </svg>
+    </div>
+  </div>
+          <div class="screen-body" id="help-report-body"></div>
+          <div class="home-indicator"></div>
+        </div>
+      </section>
+<section class="view" data-view="help-confirm" hidden>
+        <div class="phone canvas">
+<div class="status-bar">
+    <span class="sb-time">9:41</span>
+    <div class="sb-icons">
+      <svg width="18" height="12" viewBox="0 0 18 12" fill="#1A1D1C" aria-hidden="true">
+        <rect x="0" y="7" width="3" height="5" rx="0.6" opacity="0.35"/>
+        <rect x="4.5" y="5" width="3" height="7" rx="0.6" opacity="0.5"/>
+        <rect x="9" y="2.5" width="3" height="9.5" rx="0.6" opacity="0.75"/>
+        <rect x="13.5" y="0" width="3" height="12" rx="0.6"/>
+      </svg>
+      <svg width="16" height="12" viewBox="0 0 16 12" fill="#1A1D1C" aria-hidden="true">
+        <path d="M8 3.6c1.7 0 3.27.66 4.45 1.74l1.1-1.22A8.13 8.13 0 0 0 8 1.2 8.13 8.13 0 0 0 2.45 4.12l1.1 1.22A6.27 6.27 0 0 1 8 3.6Z"/>
+        <path d="M8 7.05c.9 0 1.73.34 2.37.9l1.15-1.27A5.13 5.13 0 0 0 8 5.2a5.13 5.13 0 0 0 -3.52 1.48l1.15 1.27A3.37 3.37 0 0 1 8 7.05Z"/>
+        <circle cx="8" cy="10.3" r="1.35"/>
+      </svg>
+      <svg width="27" height="13" viewBox="0 0 27 13" aria-hidden="true">
+        <rect x="0.6" y="0.6" width="22" height="11.8" rx="3.2" stroke="#1A1D1C" stroke-width="1.2" fill="none" opacity="0.4"/>
+        <rect x="2.2" y="2.2" width="17.6" height="8.6" rx="1.8" fill="#1A1D1C"/>
+        <path d="M24.4 4.2v4.6c.9-.5 1.4-1.2 1.4-2.3s-.5-1.8-1.4-2.3Z" fill="#1A1D1C" opacity="0.45"/>
+      </svg>
+    </div>
+  </div>
+          <div class="screen-body" id="help-confirm-body"></div>
+          <div class="home-indicator"></div>
+        </div>
+      </section>
+<section class="view" data-view="help-tickets" hidden>
+        <div class="phone canvas">
+<div class="status-bar">
+    <span class="sb-time">9:41</span>
+    <div class="sb-icons">
+      <svg width="18" height="12" viewBox="0 0 18 12" fill="#1A1D1C" aria-hidden="true">
+        <rect x="0" y="7" width="3" height="5" rx="0.6" opacity="0.35"/>
+        <rect x="4.5" y="5" width="3" height="7" rx="0.6" opacity="0.5"/>
+        <rect x="9" y="2.5" width="3" height="9.5" rx="0.6" opacity="0.75"/>
+        <rect x="13.5" y="0" width="3" height="12" rx="0.6"/>
+      </svg>
+      <svg width="16" height="12" viewBox="0 0 16 12" fill="#1A1D1C" aria-hidden="true">
+        <path d="M8 3.6c1.7 0 3.27.66 4.45 1.74l1.1-1.22A8.13 8.13 0 0 0 8 1.2 8.13 8.13 0 0 0 2.45 4.12l1.1 1.22A6.27 6.27 0 0 1 8 3.6Z"/>
+        <path d="M8 7.05c.9 0 1.73.34 2.37.9l1.15-1.27A5.13 5.13 0 0 0 8 5.2a5.13 5.13 0 0 0 -3.52 1.48l1.15 1.27A3.37 3.37 0 0 1 8 7.05Z"/>
+        <circle cx="8" cy="10.3" r="1.35"/>
+      </svg>
+      <svg width="27" height="13" viewBox="0 0 27 13" aria-hidden="true">
+        <rect x="0.6" y="0.6" width="22" height="11.8" rx="3.2" stroke="#1A1D1C" stroke-width="1.2" fill="none" opacity="0.4"/>
+        <rect x="2.2" y="2.2" width="17.6" height="8.6" rx="1.8" fill="#1A1D1C"/>
+        <path d="M24.4 4.2v4.6c.9-.5 1.4-1.2 1.4-2.3s-.5-1.8-1.4-2.3Z" fill="#1A1D1C" opacity="0.45"/>
+      </svg>
+    </div>
+  </div>
+          <div class="screen-body" id="help-tickets-body"></div>
+          <div class="home-indicator"></div>
+        </div>
+      </section>
+<section class="view" data-view="help-ticket" hidden>
+        <div class="phone canvas">
+<div class="status-bar">
+    <span class="sb-time">9:41</span>
+    <div class="sb-icons">
+      <svg width="18" height="12" viewBox="0 0 18 12" fill="#1A1D1C" aria-hidden="true">
+        <rect x="0" y="7" width="3" height="5" rx="0.6" opacity="0.35"/>
+        <rect x="4.5" y="5" width="3" height="7" rx="0.6" opacity="0.5"/>
+        <rect x="9" y="2.5" width="3" height="9.5" rx="0.6" opacity="0.75"/>
+        <rect x="13.5" y="0" width="3" height="12" rx="0.6"/>
+      </svg>
+      <svg width="16" height="12" viewBox="0 0 16 12" fill="#1A1D1C" aria-hidden="true">
+        <path d="M8 3.6c1.7 0 3.27.66 4.45 1.74l1.1-1.22A8.13 8.13 0 0 0 8 1.2 8.13 8.13 0 0 0 2.45 4.12l1.1 1.22A6.27 6.27 0 0 1 8 3.6Z"/>
+        <path d="M8 7.05c.9 0 1.73.34 2.37.9l1.15-1.27A5.13 5.13 0 0 0 8 5.2a5.13 5.13 0 0 0 -3.52 1.48l1.15 1.27A3.37 3.37 0 0 1 8 7.05Z"/>
+        <circle cx="8" cy="10.3" r="1.35"/>
+      </svg>
+      <svg width="27" height="13" viewBox="0 0 27 13" aria-hidden="true">
+        <rect x="0.6" y="0.6" width="22" height="11.8" rx="3.2" stroke="#1A1D1C" stroke-width="1.2" fill="none" opacity="0.4"/>
+        <rect x="2.2" y="2.2" width="17.6" height="8.6" rx="1.8" fill="#1A1D1C"/>
+        <path d="M24.4 4.2v4.6c.9-.5 1.4-1.2 1.4-2.3s-.5-1.8-1.4-2.3Z" fill="#1A1D1C" opacity="0.45"/>
+      </svg>
+    </div>
+  </div>
+          <div class="screen-body" id="help-ticket-body"></div>
+          <div class="home-indicator"></div>
+        </div>
+      </section>
+<section class="view" data-view="help-legal" hidden>
+        <div class="phone canvas">
+<div class="status-bar">
+    <span class="sb-time">9:41</span>
+    <div class="sb-icons">
+      <svg width="18" height="12" viewBox="0 0 18 12" fill="#1A1D1C" aria-hidden="true">
+        <rect x="0" y="7" width="3" height="5" rx="0.6" opacity="0.35"/>
+        <rect x="4.5" y="5" width="3" height="7" rx="0.6" opacity="0.5"/>
+        <rect x="9" y="2.5" width="3" height="9.5" rx="0.6" opacity="0.75"/>
+        <rect x="13.5" y="0" width="3" height="12" rx="0.6"/>
+      </svg>
+      <svg width="16" height="12" viewBox="0 0 16 12" fill="#1A1D1C" aria-hidden="true">
+        <path d="M8 3.6c1.7 0 3.27.66 4.45 1.74l1.1-1.22A8.13 8.13 0 0 0 8 1.2 8.13 8.13 0 0 0 2.45 4.12l1.1 1.22A6.27 6.27 0 0 1 8 3.6Z"/>
+        <path d="M8 7.05c.9 0 1.73.34 2.37.9l1.15-1.27A5.13 5.13 0 0 0 8 5.2a5.13 5.13 0 0 0 -3.52 1.48l1.15 1.27A3.37 3.37 0 0 1 8 7.05Z"/>
+        <circle cx="8" cy="10.3" r="1.35"/>
+      </svg>
+      <svg width="27" height="13" viewBox="0 0 27 13" aria-hidden="true">
+        <rect x="0.6" y="0.6" width="22" height="11.8" rx="3.2" stroke="#1A1D1C" stroke-width="1.2" fill="none" opacity="0.4"/>
+        <rect x="2.2" y="2.2" width="17.6" height="8.6" rx="1.8" fill="#1A1D1C"/>
+        <path d="M24.4 4.2v4.6c.9-.5 1.4-1.2 1.4-2.3s-.5-1.8-1.4-2.3Z" fill="#1A1D1C" opacity="0.45"/>
+      </svg>
+    </div>
+  </div>
+          <div class="screen-body" id="help-legal-body"></div>
+          <div class="home-indicator"></div>
+        </div>
+      </section>
+<section class="view" data-view="help-offline" hidden>
+        <div class="phone canvas">
+<div class="status-bar">
+    <span class="sb-time">9:41</span>
+    <div class="sb-icons">
+      <svg width="18" height="12" viewBox="0 0 18 12" fill="#1A1D1C" aria-hidden="true">
+        <rect x="0" y="7" width="3" height="5" rx="0.6" opacity="0.35"/>
+        <rect x="4.5" y="5" width="3" height="7" rx="0.6" opacity="0.5"/>
+        <rect x="9" y="2.5" width="3" height="9.5" rx="0.6" opacity="0.75"/>
+        <rect x="13.5" y="0" width="3" height="12" rx="0.6"/>
+      </svg>
+      <svg width="16" height="12" viewBox="0 0 16 12" fill="#1A1D1C" aria-hidden="true">
+        <path d="M8 3.6c1.7 0 3.27.66 4.45 1.74l1.1-1.22A8.13 8.13 0 0 0 8 1.2 8.13 8.13 0 0 0 2.45 4.12l1.1 1.22A6.27 6.27 0 0 1 8 3.6Z"/>
+        <path d="M8 7.05c.9 0 1.73.34 2.37.9l1.15-1.27A5.13 5.13 0 0 0 8 5.2a5.13 5.13 0 0 0 -3.52 1.48l1.15 1.27A3.37 3.37 0 0 1 8 7.05Z"/>
+        <circle cx="8" cy="10.3" r="1.35"/>
+      </svg>
+      <svg width="27" height="13" viewBox="0 0 27 13" aria-hidden="true">
+        <rect x="0.6" y="0.6" width="22" height="11.8" rx="3.2" stroke="#1A1D1C" stroke-width="1.2" fill="none" opacity="0.4"/>
+        <rect x="2.2" y="2.2" width="17.6" height="8.6" rx="1.8" fill="#1A1D1C"/>
+        <path d="M24.4 4.2v4.6c.9-.5 1.4-1.2 1.4-2.3s-.5-1.8-1.4-2.3Z" fill="#1A1D1C" opacity="0.45"/>
+      </svg>
+    </div>
+  </div>
+          <div class="screen-body" id="help-offline-body"></div>
+          <div class="home-indicator"></div>
+        </div>
+      </section>
     </div>
     <button type="button" class="notif-banner" id="notif-banner" hidden role="status" data-action="open-banner">
       <div class="app-icon"><svg viewBox="0 0 120 120" fill="none" aria-hidden="true"><rect x="6" y="74" width="52" height="20" rx="10" fill="#F6F4EF"/><path fill="none" stroke="#F6F4EF" stroke-width="20" stroke-linecap="round" d="M 91.487 40.014 A 33 33 0 1 1 56.513 40.014"/><circle cx="74" cy="20.5" r="13.2" fill="#C9A84C"/><circle cx="74" cy="20.5" r="7.26" fill="none" stroke="#B8943A" stroke-width="2.4"/></svg></div>
@@ -1785,6 +2095,8 @@
       </div>
     </button>
   </div>
-  <script src="js/app.js?v=20261116w"></script>
+  <script src="js/help-data.js?v=20261116x"></script>
+  <script src="js/help.js?v=20261116x"></script>
+  <script src="js/app.js?v=20261116x"></script>
 </body>
 </html>

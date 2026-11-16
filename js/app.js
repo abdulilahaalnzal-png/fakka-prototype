@@ -28,6 +28,7 @@
   ];
 
   const MONTH_SAVED = 38;
+  window.TXNS_HELP = TXNS;
 
   const state = {
     mode: "signup", // signup | login
@@ -74,6 +75,24 @@
     digestTime: "8:00 م",
     _bannerTimer: null,
     _bannerLink: "inbox",
+    tickets: null,
+    helpQuery: "",
+    helpFaqQuery: "",
+    helpFaqOpen: "faq-round",
+    helpCat: "roundup",
+    helpArticle: "how-round",
+    reportTxn: 0,
+    reportReason: "wrong",
+    reportNote: "",
+    contactCat: "التحويل",
+    contactDesc: "",
+    contactShot: false,
+    ticketId: "FS-1038",
+    confirmId: "FS-1042",
+    legalDoc: "privacy",
+    helpEmptyTickets: false,
+    _openTxn: 0,
+    _ticketSeq: 1042,
   };
 
   const $ = (sel, root = document) => root.querySelector(sel);
@@ -398,6 +417,7 @@
     syncBellBadge();
     renderInbox();
     syncNotifPrefs();
+    if (window.Help) window.Help.sync(state);
     syncNafathWait();
     const alt = $("#phone-alt-line");
     if (alt) {
@@ -477,6 +497,7 @@
   }
 
   function openTxn(i) {
+    state._openTxn = Number(i) || 0;
     const t = TXNS[Number(i)] || TXNS[0];
     const rounded = t.buy + t.save;
     if ($("#txn-name")) $("#txn-name").textContent = t.name;
@@ -524,6 +545,7 @@
     ];
   }
   state.notifs = defaultNotifs();
+  if (window.Help && !state.tickets) state.tickets = window.Help.defaultTickets();
 
   function unreadCount() {
     return (state.notifs || []).filter((n) => !n.read).length;
@@ -890,6 +912,97 @@
       case "close-txn":
         closeTxn();
         break;
+      case "open-help-cat":
+        state.helpCat = t.dataset.cat || "roundup";
+        show("help-category");
+        break;
+      case "open-article":
+        state.helpArticle = t.dataset.article || "how-round";
+        if (state.view === "help-article") {
+          if (window.Help) window.Help.sync(state);
+        } else {
+          show("help-article");
+        }
+        break;
+      case "toggle-faq": {
+        const id = t.dataset.faq;
+        state.helpFaqOpen = state.helpFaqOpen === id ? "" : id;
+        if (window.Help) window.Help.sync(state);
+        break;
+      }
+      case "open-report":
+        closeTxn();
+        state.reportTxn = state._openTxn || 0;
+        state.reportReason = "wrong";
+        state.reportNote = "";
+        show("help-report");
+        break;
+      case "pick-reason":
+        state.reportReason = t.dataset.reason || "wrong";
+        if (window.Help) window.Help.sync(state);
+        break;
+      case "submit-report": {
+        const txn = (window.TXNS_HELP || [])[state.reportTxn] || { name: "مقهى النخيل", buy: 17, save: 3, when: "اليوم" };
+        const reason = ((window.HELP_DATA && window.HELP_DATA.reportReasons) || []).find((r) => r.id === state.reportReason) || { title: "مبلغ غير صحيح", desc: "" };
+        const id = window.Help ? window.Help.nextTicketId(state) : "FS-1043";
+        const ticket = {
+          id,
+          status: "open",
+          status_ar: "مفتوح",
+          title: reason.title,
+          cat: "الادخار والتقريب",
+          sub: (txn.name || "") + " · اليوم",
+          body: state.reportNote || reason.desc || reason.title,
+          txn: (txn.name || "") + " · " + Number(txn.buy).toFixed(2) + " ر.س · فكة " + Number(txn.save).toFixed(2),
+          txnName: txn.name,
+          timeline: [["أُنشئ الطلب", "الآن", true]],
+        };
+        state.tickets = [ticket].concat(state.tickets || []);
+        state.confirmId = id;
+        state.ticketId = id;
+        show("help-confirm");
+        break;
+      }
+      case "submit-contact": {
+        const desc = (state.contactDesc || "").trim();
+        if (!desc) break;
+        const id = window.Help ? window.Help.nextTicketId(state) : "FS-1043";
+        const ticket = {
+          id,
+          status: "open",
+          status_ar: "مفتوح",
+          title: state.contactCat || "أخرى",
+          cat: state.contactCat || "أخرى",
+          sub: "اليوم",
+          body: desc + (state.contactShot ? " (مرفقة لقطة شاشة)" : ""),
+          txn: "",
+          txnName: "",
+          timeline: [["أُنشئ الطلب", "الآن", true]],
+        };
+        state.tickets = [ticket].concat(state.tickets || []);
+        state.confirmId = id;
+        state.ticketId = id;
+        state.contactDesc = "";
+        state.contactShot = false;
+        show("help-confirm");
+        break;
+      }
+      case "attach-shot":
+        state.contactShot = !state.contactShot;
+        if (window.Help) window.Help.sync(state);
+        break;
+      case "open-ticket":
+        state.ticketId = t.dataset.ticket || state.ticketId;
+        if (state.view === "help-ticket") {
+          if (window.Help) window.Help.sync(state);
+        } else {
+          show("help-ticket");
+        }
+        break;
+      case "open-legal-doc":
+        state.legalDoc = t.dataset.doc || "privacy";
+        if (window.Help) window.Help.sync(state);
+        break;
       case "toggle-pause":
         state.paused = !state.paused;
         syncPause();
@@ -1040,7 +1153,7 @@
   // hash deep-links for debugging: #home
   const hash = (location.hash || "").replace("#", "");
   if (hash && $(`.view[data-view="${hash}"]`)) {
-    if (hash === "home" || hash === "history" || hash === "settings" || hash === "profile-main" || hash === "inbox" || hash === "notif-settings") {
+    if (hash === "home" || hash === "history" || hash === "settings" || hash === "profile-main" || hash === "inbox" || hash === "notif-settings" || hash.indexOf("help") === 0) {
       seedReturningUser();
     }
     show(hash, { push: false });
