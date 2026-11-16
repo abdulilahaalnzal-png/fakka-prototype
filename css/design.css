@@ -568,8 +568,26 @@ body { padding: 48px 56px 64px; }
 .custom-field {
   margin-top: 8px; height: 52px; border-radius: 14px; border: 1.5px solid var(--fk-line);
   background: var(--fk-surface); display: flex; align-items: center; justify-content: space-between;
-  padding: 0 16px; font-size: 15px; color: var(--fk-ink-tertiary);
+  padding: 0 16px; font-size: 15px; font-weight: 600; color: var(--fk-ink-secondary);
+  width: 100%; font-family: var(--fk-font); text-align: inherit; appearance: none; -webkit-appearance: none;
 }
+.custom-field.on {
+  border-color: var(--fk-primary); background: var(--fk-primary-soft); color: var(--fk-primary); font-weight: 700;
+}
+.goal-custom-panel { margin-top: 8px; }
+.goal-amount-field {
+  display: flex; align-items: center; gap: 8px;
+  padding: 0 16px;
+}
+.goal-amount-field input {
+  flex: 1; min-width: 0; padding: 0;
+  font-variant-numeric: tabular-nums; font-weight: 700; font-size: 18px; letter-spacing: 0.02em;
+}
+.goal-amount-field .amount-suffix {
+  flex-shrink: 0; font-size: 14px; font-weight: 600; color: var(--fk-ink-secondary);
+}
+.goal-amount-field.focus .amount-suffix { color: var(--fk-primary); }
+.goal-amount-field.error .amount-suffix { color: var(--fk-danger); }
 .radio-card { display: flex; flex-direction: column; gap: 8px; }
 .radio-row {
   display: flex; align-items: flex-start; gap: 12px;

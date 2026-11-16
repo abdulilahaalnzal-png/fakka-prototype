@@ -10,14 +10,14 @@
   <meta name="mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="default" />
   <meta name="apple-mobile-web-app-title" content="فكة" />
-  <link rel="manifest" href="manifest.json?v=20261116x" />
+  <link rel="manifest" href="manifest.json?v=20261116y" />
   <link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
   <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png" />
   <title>فكة — نسخة تجريبية للتصميم</title>
-  <link rel="stylesheet" href="css/design.css?v=20261116x" />
-  <link rel="stylesheet" href="css/proto.css?v=20261116x" />
-  <link rel="stylesheet" href="css/notifications.css?v=20261116x" />
-  <link rel="stylesheet" href="css/support.css?v=20261116x" />
+  <link rel="stylesheet" href="css/design.css?v=20261116y" />
+  <link rel="stylesheet" href="css/proto.css?v=20261116y" />
+  <link rel="stylesheet" href="css/notifications.css?v=20261116y" />
+  <link rel="stylesheet" href="css/support.css?v=20261116y" />
 </head>
 <body>
   <div id="app">
@@ -704,6 +704,15 @@
                 <button type="button" class="preset on" data-action="set-goal" data-goal="50">50<small>ر.س</small></button>
                 <button type="button" class="preset" data-action="set-goal" data-goal="100">100<small>ر.س</small></button>
                 <button type="button" class="preset" data-action="set-goal" data-goal="200">200<small>ر.س</small></button>
+              </div>
+              <button type="button" class="custom-field" data-action="set-goal-custom" aria-pressed="false">مبلغ آخر</button>
+              <div class="goal-custom-panel hidden" id="ob-goal-custom">
+                <div class="input ltr goal-amount-field" id="ob-goal-amount-field">
+                  <input class="goal-amount-input" id="ob-goal-amount" type="text" inputmode="numeric" pattern="[0-9]*" maxlength="4" placeholder="0" dir="ltr" autocomplete="off" autocorrect="off" spellcheck="false" enterkeyhint="done" aria-label="مبلغ الهدف الشهري" aria-describedby="ob-goal-hint" />
+                  <span class="amount-suffix">ر.س</span>
+                </div>
+                <p class="field-hint" id="ob-goal-hint">من 10 إلى 5,000 ر.س بالشهر</p>
+                <div class="field-error hidden" id="ob-goal-error" role="alert"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1.8"/><path d="M12 7.5v6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><circle cx="12" cy="16.5" r="1.1" fill="currentColor"/></svg><span></span></div>
               </div>
             </div>
             <div class="bottom">
@@ -1454,6 +1463,15 @@
               <button type="button" class="preset" data-action="set-goal" data-goal="100">100<small>ر.س</small></button>
               <button type="button" class="preset" data-action="set-goal" data-goal="200">200<small>ر.س</small></button>
             </div>
+            <button type="button" class="custom-field" data-action="set-goal-custom" aria-pressed="false">مبلغ آخر</button>
+            <div class="goal-custom-panel hidden" id="goal-custom">
+              <div class="input ltr goal-amount-field" id="goal-amount-field">
+                <input class="goal-amount-input" id="goal-amount" type="text" inputmode="numeric" pattern="[0-9]*" maxlength="4" placeholder="0" dir="ltr" autocomplete="off" autocorrect="off" spellcheck="false" enterkeyhint="done" aria-label="مبلغ الهدف الشهري" aria-describedby="goal-hint" />
+                <span class="amount-suffix">ر.س</span>
+              </div>
+              <p class="field-hint" id="goal-hint">من 10 إلى 5,000 ر.س بالشهر</p>
+              <div class="field-error hidden" id="goal-error" role="alert"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1.8"/><path d="M12 7.5v6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><circle cx="12" cy="16.5" r="1.1" fill="currentColor"/></svg><span></span></div>
+            </div>
             <div class="ob-label" style="margin-top:20px">إذا وصل الهدف</div>
             <div class="list-card">
               <button type="button" class="list-row radio on" data-action="set-goal-policy" data-policy="ask" style="width:100%;background:none;border:0;border-bottom:1px solid var(--fk-line);font:inherit;color:inherit;text-align:inherit;">
@@ -2095,8 +2113,8 @@
       </div>
     </button>
   </div>
-  <script src="js/help-data.js?v=20261116x"></script>
-  <script src="js/help.js?v=20261116x"></script>
-  <script src="js/app.js?v=20261116x"></script>
+  <script src="js/help-data.js?v=20261116y"></script>
+  <script src="js/help.js?v=20261116y"></script>
+  <script src="js/app.js?v=20261116y"></script>
 </body>
 </html>

@@ -28,6 +28,9 @@
   ];
 
   const MONTH_SAVED = 38;
+  const GOAL_PRESETS = [30, 50, 100, 200];
+  const GOAL_MIN = 10;
+  const GOAL_MAX = 5000;
   window.TXNS_HELP = TXNS;
 
   const state = {
@@ -41,6 +44,7 @@
     step: 5,
     goal: 50,
     goalSet: false,
+    goalCustom: false,
     goalPolicy: "ask",
     paused: false,
     bank: null,
@@ -245,10 +249,148 @@
     if ($("#bank-ex-save")) $("#bank-ex-save").textContent = (rounded - buy).toFixed(2) + " ر.س";
   }
 
-  function syncGoalUI() {
-    $$("[data-action='set-goal']").forEach((el) => {
-      el.classList.toggle("on", Number(el.dataset.goal) === state.goal);
+  function toWesternDigits(str) {
+    return String(str || "")
+      .replace(/[\u0660-\u0669]/g, (d) => String(d.charCodeAt(0) - 0x0660))
+      .replace(/[\u06F0-\u06F9]/g, (d) => String(d.charCodeAt(0) - 0x06F0));
+  }
+
+  function sanitizeGoalInput(raw) {
+    return toWesternDigits(raw).replace(/\D/g, "").slice(0, 4);
+  }
+
+  function parseGoalAmount(raw) {
+    const digits = sanitizeGoalInput(raw);
+    if (!digits) return { digits: "", value: null, error: null, valid: false };
+    const value = parseInt(digits, 10);
+    if (!Number.isFinite(value)) return { digits: "", value: null, error: null, valid: false };
+    if (value < GOAL_MIN) return { digits, value, error: "أقل مبلغ 10 ر.س", valid: false };
+    if (value > GOAL_MAX) return { digits, value, error: "أعلى مبلغ 5,000 ر.س", valid: false };
+    return { digits, value, error: null, valid: true };
+  }
+
+  function isCustomGoal(n) {
+    return !GOAL_PRESETS.includes(Number(n));
+  }
+
+  function customGoalSelected() {
+    return state.goalCustom || isCustomGoal(state.goal);
+  }
+
+  function goalDraftValid() {
+    if (!customGoalSelected()) return true;
+    const input = document.querySelector(".view.on .goal-amount-input") || $(".goal-amount-input");
+    const raw = input ? input.value : (isCustomGoal(state.goal) ? String(state.goal) : "");
+    return parseGoalAmount(raw).valid;
+  }
+
+  function syncGoalButtons() {
+    const ok = goalDraftValid();
+    $$("[data-action='save-goal'], [data-action='save-savings']").forEach((btn) => {
+      if (btn) btn.disabled = !ok;
     });
+  }
+
+  function syncCustomGoalPanels() {
+    const custom = customGoalSelected();
+    $$(".custom-field[data-action='set-goal-custom']").forEach((el) => {
+      el.classList.toggle("on", custom);
+      el.setAttribute("aria-pressed", custom ? "true" : "false");
+    });
+    $$(".goal-custom-panel").forEach((panel) => {
+      panel.classList.toggle("hidden", !custom);
+      const field = panel.querySelector(".goal-amount-field");
+      const input = panel.querySelector(".goal-amount-input");
+      const err = panel.querySelector(".field-error");
+      const errText = err && err.querySelector("span");
+      if (custom && input && document.activeElement !== input && !input.value && isCustomGoal(state.goal)) {
+        input.value = String(state.goal);
+      }
+      const current = parseGoalAmount(input ? input.value : "");
+      if (field) field.classList.toggle("error", custom && !!current.error);
+      if (input) input.setAttribute("aria-invalid", custom && current.error ? "true" : "false");
+      if (err) {
+        err.classList.toggle("hidden", !custom || !current.error);
+        if (errText) errText.textContent = current.error || "";
+      }
+    });
+    syncGoalButtons();
+  }
+
+  function scrollGoalAmountIntoView(input) {
+    if (!input) return;
+    const body = input.closest(".screen-body");
+    const bottom = body && body.querySelector(".bottom");
+    const run = () => {
+      const vv = window.visualViewport;
+      const viewTop = vv ? vv.offsetTop : 0;
+      const viewH = vv ? vv.height : window.innerHeight;
+      const viewBottom = viewTop + viewH - 16;
+      const inputRect = input.getBoundingClientRect();
+      const btnRect = bottom ? bottom.getBoundingClientRect() : null;
+      const targetBottom = btnRect ? btnRect.bottom + 12 : inputRect.bottom + 24;
+      let delta = 0;
+      if (inputRect.top < viewTop + 12) delta = inputRect.top - viewTop - 24;
+      else if (targetBottom > viewBottom) delta = targetBottom - viewBottom;
+      if (delta) window.scrollBy({ top: delta, behavior: "smooth" });
+    };
+    requestAnimationFrame(() => requestAnimationFrame(run));
+    setTimeout(run, 350);
+  }
+
+  function onGoalAmountInput(e) {
+    const input = e.target;
+    const clean = sanitizeGoalInput(input.value);
+    if (input.value !== clean) input.value = clean;
+    state.goalCustom = true;
+    const parsed = parseGoalAmount(clean);
+    if (parsed.valid) state.goal = parsed.value;
+    const field = input.closest(".goal-amount-field");
+    if (field) field.classList.toggle("error", !!parsed.error);
+    const panel = input.closest(".goal-custom-panel");
+    const err = panel && panel.querySelector(".field-error");
+    const errText = err && err.querySelector("span");
+    if (err) {
+      err.classList.toggle("hidden", !parsed.error);
+      if (errText) errText.textContent = parsed.error || "";
+    }
+    input.setAttribute("aria-invalid", parsed.error ? "true" : "false");
+    // Keep the sibling input in the other picker in sync
+    $$(".goal-amount-input").forEach((el) => {
+      if (el !== input && el.value !== input.value) el.value = input.value;
+    });
+    syncGoalButtons();
+    if ($("#set-goal") && parsed.valid) {
+      $("#set-goal").textContent = state.goalSet ? `${state.goal} ريال لشهر نوفمبر` : "لم يُحدَّد بعد";
+    }
+  }
+
+  function onGoalAmountFocus(e) {
+    const field = e.target.closest(".goal-amount-field");
+    if (field) field.classList.add("focus");
+    document.body.classList.add("goal-kbd-open");
+    scrollGoalAmountIntoView(e.target);
+  }
+
+  function onGoalAmountBlur(e) {
+    const field = e.target.closest(".goal-amount-field");
+    if (field) field.classList.remove("focus");
+    const parsed = parseGoalAmount(e.target.value);
+    if (parsed.valid && e.target.value !== String(parsed.value)) e.target.value = String(parsed.value);
+    // Delay removing padding so the tap on Save still lands correctly
+    setTimeout(() => {
+      if (!document.activeElement || !document.activeElement.classList.contains("goal-amount-input")) {
+        document.body.classList.remove("goal-kbd-open");
+      }
+    }, 150);
+  }
+
+  function syncGoalUI() {
+    if (isCustomGoal(state.goal)) state.goalCustom = true;
+    $$("[data-action='set-goal']").forEach((el) => {
+      el.classList.toggle("on", !state.goalCustom && Number(el.dataset.goal) === state.goal);
+    });
+    syncCustomGoalPanels();
     if ($("#set-goal")) {
       $("#set-goal").textContent = state.goalSet
         ? `${state.goal} ريال لشهر نوفمبر`
@@ -883,9 +1025,33 @@
         break;
       case "set-goal":
         state.goal = Number(t.dataset.goal);
+        state.goalCustom = false;
+        document.body.classList.remove("goal-kbd-open");
         syncGoalUI();
         break;
+      case "set-goal-custom":
+        state.goalCustom = true;
+        if (isCustomGoal(state.goal)) {
+          $$(".goal-amount-input").forEach((el) => {
+            if (!el.value) el.value = String(state.goal);
+          });
+        }
+        syncGoalUI();
+        (function () {
+          const input = document.querySelector(".view.on .goal-amount-input");
+          if (input) {
+            input.focus();
+            scrollGoalAmountIntoView(input);
+          }
+        })();
+        break;
       case "save-savings":
+        if (!goalDraftValid()) break;
+        if (state.goalCustom) {
+          const parsed = parseGoalAmount((document.querySelector(".view.on .goal-amount-input") || {}).value || "");
+          if (!parsed.valid) break;
+          state.goal = parsed.value;
+        }
         state.goalSet = true;
         awardGoal();
         show("levels");
@@ -1028,6 +1194,12 @@
         );
         break;
       case "save-goal":
+        if (!goalDraftValid()) break;
+        if (state.goalCustom) {
+          const parsed = parseGoalAmount((document.querySelector(".view.on .goal-amount-input") || {}).value || "");
+          if (!parsed.valid) break;
+          state.goal = parsed.value;
+        }
         state.goalSet = true;
         awardGoal();
         show("home");
@@ -1055,6 +1227,7 @@
           step: 5,
           goal: 50,
           goalSet: false,
+          goalCustom: false,
           paused: false,
           bank: null,
           points: 0,
@@ -1066,6 +1239,8 @@
         if ($("#otp-input")) $("#otp-input").value = "";
         if ($("#name-input")) $("#name-input").value = "";
         if ($("#email-input")) $("#email-input").value = "";
+        $$(".goal-amount-input").forEach((el) => { el.value = ""; });
+        document.body.classList.remove("goal-kbd-open");
         setOtpBoxes("");
         show("welcome", { push: false });
         break;
@@ -1150,10 +1325,24 @@
 
   window.addEventListener("pageshow", () => scrollToTop());
 
+  $$(".goal-amount-input").forEach((input) => {
+    input.addEventListener("input", onGoalAmountInput);
+    input.addEventListener("focus", onGoalAmountFocus);
+    input.addEventListener("blur", onGoalAmountBlur);
+  });
+  if (window.visualViewport) {
+    window.visualViewport.addEventListener("resize", () => {
+      const active = document.activeElement;
+      if (active && active.classList.contains("goal-amount-input")) {
+        scrollGoalAmountIntoView(active);
+      }
+    });
+  }
+
   // hash deep-links for debugging: #home
   const hash = (location.hash || "").replace("#", "");
   if (hash && $(`.view[data-view="${hash}"]`)) {
-    if (hash === "home" || hash === "history" || hash === "settings" || hash === "profile-main" || hash === "inbox" || hash === "notif-settings" || hash.indexOf("help") === 0) {
+    if (hash === "home" || hash === "history" || hash === "settings" || hash === "profile-main" || hash === "inbox" || hash === "notif-settings" || hash === "goal" || hash.indexOf("help") === 0) {
       seedReturningUser();
     }
     show(hash, { push: false });

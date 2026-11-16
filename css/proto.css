@@ -328,6 +328,12 @@ body {
 .btn { cursor: pointer; user-select: none; -webkit-tap-highlight-color: transparent; }
 .btn:active { transform: scale(0.99); opacity: 0.92; }
 .btn[disabled] { opacity: 0.45; pointer-events: none; }
+
+/* Keep the amount field and save button above the iOS keyboard */
+body.goal-kbd-open .bottom { position: static; }
+body.goal-kbd-open .view.on .screen-body {
+  padding-bottom: calc(280px + env(safe-area-inset-bottom, 0px)) !important;
+}
 .icon-btn, .bell-btn, .n-row, .n-demo, .nset-row, .list-row, .txn, .txn-row, .filter-chip, .seg, .preset, .tab,
 .choice-btn, .pause-action, .link, .check, .pts-row, .nav-card, .h-cat, .h-reason, .h-attach, .h-faq-q, .h-faq-more {
   cursor: pointer; -webkit-tap-highlight-color: transparent;
@@ -392,7 +398,7 @@ button.icon-btn, button.btn {
   appearance: none; -webkit-appearance: none;
 }
 
-button.seg, button.preset, button.filter-chip, button.chip, button.tab, button.choice-btn,
+button.seg, button.preset, button.custom-field, button.filter-chip, button.chip, button.tab, button.choice-btn,
 button.list-row, button.txn, button.txn-row, button.level-block, button.pause-action {
   appearance: none; -webkit-appearance: none;
   font-family: inherit; color: inherit;
