@@ -15,7 +15,7 @@ html, body {
 /* Small overlay label — not a full-width band */
 .demo-tag {
   position: absolute;
-  top: calc(env(safe-area-inset-top, 0px) + 6px);
+  top: calc(max(env(safe-area-inset-top, 0px), 16px) + 6px);
   left: 50%;
   transform: translateX(-50%);
   z-index: 40;
@@ -134,9 +134,19 @@ body {
   .home-indicator { display: none !important; }
 
   .phone {
-    padding-top: env(safe-area-inset-top, 0px);
+    /* Clear notch and in-app toolbars; never sit flush at the top */
+    padding-top: calc(max(env(safe-area-inset-top, 0px), 16px) + 16px);
     border-radius: 0 !important;
     box-shadow: none !important;
+  }
+  .phone:not(.welcome) .screen-body {
+    padding-top: 12px;
+  }
+  /* Prefer the small viewport so 100dvh doesn't overflow under a visible URL bar */
+  html, body, #app, .view.on, .view.on:not([hidden]), .phone, .phone.welcome {
+    min-height: 100vh;
+    min-height: 100dvh;
+    min-height: 100svh;
   }
   .phone:not(.has-tabs) .screen-body {
     padding-bottom: calc(16px + env(safe-area-inset-bottom, 0px));
@@ -147,6 +157,13 @@ body {
   .bottom,
   .welcome-actions {
     padding-bottom: calc(16px + env(safe-area-inset-bottom, 0px)) !important;
+  }
+  /* CTA follows content — no mid-page void from margin-top:auto + min-height */
+  .bottom {
+    margin-top: 20px !important;
+  }
+  .welcome-actions {
+    margin-top: 0 !important;
   }
   /* Tab bar docks to the real viewport, content padded above it */
   .tabbar {

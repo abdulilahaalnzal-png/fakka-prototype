@@ -1,5 +1,17 @@
 /* فكة — interactive design prototype */
 (function () {
+  if ("scrollRestoration" in history) history.scrollRestoration = "manual";
+
+  function scrollToTop() {
+    window.scrollTo(0, 0);
+    if (document.documentElement) document.documentElement.scrollTop = 0;
+    if (document.body) document.body.scrollTop = 0;
+    const stage = document.getElementById("stage");
+    if (stage) stage.scrollTop = 0;
+    const bodyEl = document.querySelector(".view.on .screen-body");
+    if (bodyEl) bodyEl.scrollTop = 0;
+  }
+
   const LEVELS = [
     { n: 1, name: "برونزي", from: 0, mark: "cream" },
     { n: 2, name: "فضي", from: 250, mark: "green" },
@@ -101,20 +113,16 @@
       if (on) v.removeAttribute("hidden");
       else v.setAttribute("hidden", "");
     });
-    window.scrollTo(0, 0);
-    if (document.documentElement) document.documentElement.scrollTop = 0;
-    if (document.body) document.body.scrollTop = 0;
-    $("#stage") && ($("#stage").scrollTop = 0);
-    const bodyEl = document.querySelector(".view.on .screen-body");
-    if (bodyEl) bodyEl.scrollTop = 0;
+    scrollToTop();
     render();
     syncScrollLock();
-    if (name === "otp") {
-      setTimeout(() => $("#otp-input") && $("#otp-input").focus(), 200);
-    }
-    if (name === "phone") {
-      setTimeout(() => $("#phone-input") && $("#phone-input").focus(), 200);
-    }
+    scrollToTop();
+    requestAnimationFrame(() => {
+      scrollToTop();
+      requestAnimationFrame(scrollToTop);
+    });
+    setTimeout(scrollToTop, 0);
+    setTimeout(scrollToTop, 50);
     if (name === "bank-connecting") {
       clearTimeout(show._conn);
       show._conn = setTimeout(() => {
@@ -627,6 +635,8 @@
         row.style.display = !q || row.dataset.bank.includes(q) ? "" : "none";
       });
     });
+
+  window.addEventListener("pageshow", () => scrollToTop());
 
   // hash deep-links for debugging: #home
   const hash = (location.hash || "").replace("#", "");
