@@ -560,6 +560,7 @@
     renderInbox();
     syncNotifPrefs();
     if (window.Help) window.Help.sync(state);
+    if (window.FakkaBusiness) window.FakkaBusiness.sync(state);
     syncNafathWait();
     const alt = $("#phone-alt-line");
     if (alt) {
@@ -1342,7 +1343,7 @@
   // hash deep-links for debugging: #home
   const hash = (location.hash || "").replace("#", "");
   if (hash && $(`.view[data-view="${hash}"]`)) {
-    if (hash === "home" || hash === "history" || hash === "settings" || hash === "profile-main" || hash === "inbox" || hash === "notif-settings" || hash === "goal" || hash.indexOf("help") === 0) {
+    if (hash === "home" || hash === "history" || hash === "settings" || hash === "profile-main" || hash === "inbox" || hash === "notif-settings" || hash === "goal" || hash.indexOf("help") === 0 || hash.indexOf("business") === 0) {
       seedReturningUser();
     }
     show(hash, { push: false });

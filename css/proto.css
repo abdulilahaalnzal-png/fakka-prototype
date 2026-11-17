@@ -399,10 +399,12 @@ button.icon-btn, button.btn {
 }
 
 button.seg, button.preset, button.custom-field, button.filter-chip, button.chip, button.tab, button.choice-btn,
-button.list-row, button.txn, button.txn-row, button.level-block, button.pause-action {
+button.list-row, button.txn, button.txn-row, button.level-block, button.pause-action,
+button.biz-card, button.biz-chip, button.biz-settings-row {
   appearance: none; -webkit-appearance: none;
   font-family: inherit; color: inherit;
 }
+button.level-block, button.biz-card, button.biz-settings-row { white-space: normal; }
 button.seg, button.preset { border: 0; }
 button.preset { display: flex; flex-direction: column; align-items: center; justify-content: center; }
 button.tab {
